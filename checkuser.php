@@ -6,9 +6,9 @@ function getUserTypeID() {
     // You may need to adjust this based on how user type ID is actually stored in your application
     if (isset($_SESSION['user_type_ID'])) {
         return $_SESSION['user_type_ID'];
-        echo "user_type_ID: ".$_SESSION['user_type_ID']."<br>";
     } else {
         // Default to a guest user type ID (you may adjust this as needed)
         return 0;
     }
 }
+?>

@@ -1,5 +1,4 @@
 <?php include('condb.php'); ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

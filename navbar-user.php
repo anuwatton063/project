@@ -32,8 +32,7 @@
                     
                     // Check if the query is successful
                     if($result && $result->num_rows > 0) {
-                        $user_row = $result->fetch_assoc();
-                        
+                        $user_row = $result->fetch_assoc();                    
                         echo '<span class="navbar-text me-2">Welcome, ' . $_SESSION['username'] . '</span>';                       
                         // Check if user_type_ID is set and equal to 1
                         if($user_row['user_type_ID'] == 1) {

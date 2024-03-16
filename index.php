@@ -1,5 +1,7 @@
-<!DOCTYPE html>
+<?php include('condb.php'); ?>
 <?php include 'navbar-user.php'; ?>
+
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8" />
