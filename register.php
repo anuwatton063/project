@@ -1,3 +1,66 @@
+<?php 
+include('condb.php'); 
+
+$insert_user_query = null; // ประกาศตัวแปรนอกเพื่อให้สามารถปิดได้ทุกกรณี
+$errors = []; // เก็บข้อผิดพลาดที่เกิดขึ้น
+
+// เรียกใช้งาน session_start() ก่อนการใช้งาน session
+session_start();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST["username"];
+    $email = $_POST["email"];
+    $password = $_POST["password"];
+    $confirmPassword = $_POST["confirmPassword"];
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT); // Hash the password
+
+    // Check if confirmPassword matches password
+    if ($password !== $confirmPassword) {
+        $errors[] = "Passwords do not match";
+    }
+
+    // Check if username or email already exists in user_information table
+    $check_user_query = $conn->prepare("SELECT * FROM user_information WHERE username=? OR email=?");
+    $check_user_query->bind_param("ss", $username, $email);
+    $check_user_query->execute();
+    $check_user_result = $check_user_query->get_result();
+
+    if ($check_user_result->num_rows > 0) {
+        $row = $check_user_result->fetch_assoc();
+        if ($row["username"] == $username) {
+            $errors[] = "ชื่อผู้ใช้นี้มีอยู่แล้ว.";
+        }
+        if ($row["email"] == $email) {
+            $errors[] = "อีเมลนี้มีอยู่แล้ว";
+        }
+    }
+
+    // If there are no errors, proceed with user creation
+    if (empty($errors)) {
+        // SQL to insert data into the database for user_information table
+        $insert_user_query = $conn->prepare("INSERT INTO user_information (username, email, password) VALUES (?, ?, ?)");
+        $insert_user_query->bind_param("sss", $username, $email, $hashed_password);
+
+        // Execute the SQL query
+        if ($insert_user_query->execute()) {
+            header("Location: login.php");
+            exit();
+        } else {
+            $errors[] = "ไม่สามารถาสร้างข้อมูลได้.";
+        }
+    }
+
+    // Close prepared statements
+    $check_user_query->close();
+    if ($insert_user_query != null) {
+        $insert_user_query->close();
+    }
+}
+
+$conn->close();
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,6 +90,18 @@
         <div class="col-md-6 offset-md-3">
             <div class="form-container">
                 <h2 class="mb-4">Registration Form</h2>
+
+                <!-- แสดงข้อผิดพลาด -->
+                <?php if (!empty($errors)): ?>
+                    <div class="alert alert-danger mt-3" role="alert">
+                        <ul>
+                            <?php foreach ($errors as $error): ?>
+                                <li><?php echo $error; ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
+
                 <form id="registerForm" method="post" action="register.php">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
@@ -41,13 +116,14 @@
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
                         <input type="password" class="form-control" id="password" name="password" required>
+                        <div id="passwordError" class="text-danger"></div>
                     </div>
                     <div class="mb-3">
                         <label for="confirmPassword" class="form-label">Confirm Password</label>
                         <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
-                        <div id="passwordError" class="text-danger"></div>
+                        <div id="confirmPasswordError" class="text-danger"></div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Register</button>
+                    <button type="submit" class="btn btn-primary" id="registerButton">Register</button>
                     <a class="btn btn-outline-dark me-2" href="login.php">Login</a>
                 </form>
             </div>
@@ -72,55 +148,42 @@
         document.getElementById("emailError").innerText = "";
         document.getElementById("email").classList.remove("is-invalid");
     });
+
+    // Check if confirmPassword matches password
+    document.getElementById("confirmPassword").addEventListener("input", function() {
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirmPassword").value;
+
+        if (password !== confirmPassword) {
+            showError("password", "กรุณากรอกรหัสให้ตรงกัน");
+            showError("confirmPassword", "กรุณากรอกรหัสให้ตรงกัน");
+        } else {
+            document.getElementById("passwordError").innerText = "";
+            document.getElementById("password").classList.remove("is-invalid");
+            document.getElementById("confirmPasswordError").innerText = "";
+            document.getElementById("confirmPassword").classList.remove("is-invalid");
+        }
+    });
+
+    // Prevent form submission if there are errors
+    document.getElementById("registerButton").addEventListener("click", function(event) {
+        var errorsExist = false;
+
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirmPassword").value;
+
+        if (password !== confirmPassword) {
+            showError("password", "กรุณากรอกรหัสให้ตรงกัน");
+            showError("confirmPassword", "กรุณากรอกรหัสให้ตรงกัน");
+            errorsExist = true;
+        }
+
+        if (errorsExist) {
+            event.preventDefault();
+        }
+    });
+    
 </script>
 
-<?php 
-include('condb.php'); 
-
-$insert_user_query = null; // ประกาศตัวแปรนอกเพื่อให้สามารถปิดได้ทุกกรณี
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST["username"];
-    $email = $_POST["email"];
-    $password = $_POST["password"];
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT); // Hash the password
-
-    // Check if username or email already exists in user_information table
-    $check_user_query = $conn->prepare("SELECT * FROM user_information WHERE username=? OR email=?");
-    $check_user_query->bind_param("ss", $username, $email);
-    $check_user_query->execute();
-    $check_user_result = $check_user_query->get_result();
-
-    if ($check_user_result->num_rows > 0) {
-        $row = $check_user_result->fetch_assoc();
-        if ($row["username"] == $username) {
-            echo '<script>showError("username", "Username already exists. Please choose another username.")</script>';
-        }
-        if ($row["email"] == $email) {
-            echo '<script>showError("email", "Email already exists. Please use another email.")</script>';
-        }
-    } else {
-        // SQL to insert data into the database for user_information table
-        $insert_user_query = $conn->prepare("INSERT INTO user_information (username, email, password) VALUES (?, ?, ?)");
-        $insert_user_query->bind_param("sss", $username, $email, $hashed_password);
-
-        // Execute the SQL query
-        if ($insert_user_query->execute()) {
-            header("Location: login.php");
-            exit();
-        } else {
-            echo '<script>alert("An error occurred while adding data.")</script>';         
-        }
-    }
-    
-    // Close prepared statements
-    $check_user_query->close();
-    if ($insert_user_query != null) {
-        $insert_user_query->close();
-    }
-}
-
-$conn->close();
-?>
 </body>
 </html>

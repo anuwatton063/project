@@ -93,14 +93,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("ss", $username_email, $username_email);
     $stmt->execute();
     $check_user_result = $stmt->get_result();
-
+    
     if ($check_user_result->num_rows == 1) {
         $user_row = $check_user_result->fetch_assoc();
         $stored_password = $user_row["password"];
     
         if (password_verify($_POST["password"], $stored_password)) {
             $_SESSION  = $user_row; // เก็บข้อมูลผู้ใช้งานใน session
-    
+            
             switch ($_SESSION['user_type_ID']) {
                 case 1:
                     header("Location: admin.php");
@@ -113,7 +113,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 default:
                     // จัดการประเภทผู้ใช้งานอื่นๆ ตามความเหมาะสม
                     break;
+                    
             }
+
         } else {
             echo '<script>showAlert("รหัสผ่านไม่ถูกต้อง")</script>';
         }
