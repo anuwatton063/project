@@ -32,14 +32,28 @@ if (isset($_GET['search'])) {
 // Additional condition for SQL query based on search query
 $search_condition = '';
 if ($search_query !== '') {
-    $search_condition = "WHERE username LIKE '%$search_query%' OR fname LIKE '%$search_query%' OR lname LIKE '%$search_query%' OR email LIKE '%$search_query%'"; // Adjust as needed
+    $search_condition = "AND (ui.username LIKE '%$search_query%' OR ui.fname LIKE '%$search_query%' OR ui.lname LIKE '%$search_query%' OR ui.email LIKE '%$search_query%' OR ut.user_type_name LIKE '%$search_query%')"; // Adjust as needed
+}
+
+// Initialize user type filter variable
+$user_type_filter = '';
+
+// If user type filter is provided, sanitize it
+if (isset($_GET['user_type'])) {
+    $user_type_filter = mysqli_real_escape_string($conn, $_GET['user_type']);
+}
+
+// Additional condition for SQL query based on user type filter
+$user_type_condition = '';
+if ($user_type_filter !== '') {
+    $user_type_condition = "AND ui.user_type_ID = '$user_type_filter'";
 }
 
 // Query to fetch user information for the current page with search condition
 $sql = "SELECT ui.*, ut.user_type_name 
         FROM `user_information` ui 
         INNER JOIN `user_type` ut ON ui.user_type_ID = ut.user_type_ID 
-        $search_condition
+        WHERE 1=1 $search_condition $user_type_condition
         LIMIT $offset, $users_per_page";
 $query_sql = mysqli_query($conn, $sql);
 ?>
@@ -67,6 +81,15 @@ $query_sql = mysqli_query($conn, $sql);
                     <form action="admin-user.php" method="GET">
                         <div class="input-group mb-3">
                             <input type="text" class="form-control" placeholder="ค้นหาข้อมูลทั้งหมดจากฐานข้อมูล" name="search" value="<?php echo htmlspecialchars($search_query); ?>">
+                            <select class="form-select" name="user_type">
+                                <option value="" <?php echo ($user_type_filter === '') ? 'selected' : ''; ?>>เลือกประเภทผู้ใช้</option>
+                                <?php
+                                $user_type_query = mysqli_query($conn, "SELECT * FROM `user_type`");
+                                while ($type_row = mysqli_fetch_assoc($user_type_query)) {
+                                    echo "<option value='" . $type_row['user_type_ID'] . "' " . ($user_type_filter == $type_row['user_type_ID'] ? 'selected' : '') . ">" . $type_row['user_type_name'] . "</option>";
+                                }
+                                ?>
+                            </select>
                             <button class="btn btn-outline-secondary" type="submit">ค้นหา</button>
                         </div>
                     </form>
@@ -87,7 +110,7 @@ $query_sql = mysqli_query($conn, $sql);
                             <th>ชื่อจริง</th>
                             <th>นามสกุล</th>
                             <th>Email</th>
-                            <th>User Type</th> <!-- New column for user type -->
+                            <th>ประเถทผู้ใช้</th> <!-- New column for user type -->
                             <th>Actions</th> <!-- New column for actions -->
                         </tr>
                     </thead>
@@ -113,7 +136,7 @@ $query_sql = mysqli_query($conn, $sql);
                 </table>
                 <?php
                 // Display pagination if there are more than one page
-                $total_users_query = mysqli_query($conn, "SELECT COUNT(*) AS total_users FROM `user_information` $search_condition");
+                $total_users_query = mysqli_query($conn, "SELECT COUNT(*) AS total_users FROM `user_information` ui INNER JOIN `user_type` ut ON ui.user_type_ID = ut.user_type_ID WHERE 1=1 $search_condition $user_type_condition");
                 $total_users_data = mysqli_fetch_assoc($total_users_query);
                 $total_users = $total_users_data['total_users'];
                 $total_pages = ceil($total_users / $users_per_page);
@@ -122,7 +145,7 @@ $query_sql = mysqli_query($conn, $sql);
                     echo "<nav aria-label='Page navigation'>";
                     echo "<ul class='pagination justify-content-center'>";
                     for ($i = 1; $i <= $total_pages; $i++) {
-                        echo "<li class='page-item" . ($current_page == $i ? " active" : "") . "'><a class='page-link' href='admin-user.php?page=" . $i . "&search=" . urlencode($search_query) . "'>" . $i . "</a></li>";
+                        echo "<li class='page-item" . ($current_page == $i ? " active" : "") . "'><a class='page-link' href='admin-user.php?page=" . $i . "&search=" . urlencode($search_query) . "&user_type=" . urlencode($user_type_filter) . "'>" . $i . "</a></li>";
                     }
                     echo "</ul>";
                     echo "</nav>";

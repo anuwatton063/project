@@ -52,49 +52,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit(); // Ensure script execution stops after error handling
     }
 }
+
+// Query to fetch user types
+$user_type_query = mysqli_query($conn, "SELECT * FROM `user_type`");
+$user_types = mysqli_fetch_all($user_type_query, MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Shop Homepage - Start Bootstrap Template</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-        <!-- Bootstrap icons-->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@5.3.0/font/bootstrap-icons.css" rel="stylesheet" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Shop Homepage - Start Bootstrap Template</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@5.3.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet">
+
+    <!-- JavaScript for confirmation dialog -->
+    <script>
+        // Function to confirm before submitting form
+        function confirmChanges() {
+            return confirm("Are you sure you want to make changes?");
+        }
+    </script>
 </head>
 <body>
     <div class="container mt-4">
         <h2>Edit User</h2>
-        <form method="post">
+        <form method="post" onsubmit="return confirmChanges()">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" name="username" value="<?php echo $user_data['username']; ?>">
+                <input type="text" class="form-control" id="username" name="username" value="<?= $user_data['username']; ?>">
             </div>
             <div class="form-group">
                 <label for="fname">First Name</label>
-                <input type="text" class="form-control" id="fname" name="fname" value="<?php echo $user_data['fname']; ?>">
+                <input type="text" class="form-control" id="fname" name="fname" value="<?= $user_data['fname']; ?>">
             </div>
             <div class="form-group">
                 <label for="lname">Last Name</label>
-                <input type="text" class="form-control" id="lname" name="lname" value="<?php echo $user_data['lname']; ?>">
+                <input type="text" class="form-control" id="lname" name="lname" value="<?= $user_data['lname']; ?>">
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="<?php echo $user_data['email']; ?>">
+                <input type="email" class="form-control" id="email" name="email" value="<?= $user_data['email']; ?>">
             </div>
             <div class="form-group">
-                <label for="user_type_ID">User Type ID</label>
-                <input type="number" class="form-control" id="user_type_ID" name="user_type_ID" value="<?php echo $user_data['user_type_ID']; ?>">
+                <label for="user_type_ID">User Type</label>
+                <select class="form-control" id="user_type_ID" name="user_type_ID">
+                    <?php foreach ($user_types as $type) : ?>
+                        <option value="<?= $type['user_type_ID']; ?>" <?= $type['user_type_ID'] == $user_data['user_type_ID'] ? 'selected' : ''; ?>><?= $type['user_type_name']; ?></option>
+                    <?php endforeach; ?>
+                </select>
             </div>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
+            
+            <button type="submit" class="btn btn-primary save-button">Save Changes</button>
         </form>
     </div>
 </body>
 </html>
+
+
+
