@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +19,8 @@
             position: fixed;
             top: 0;
             left: 0;
-            height: 100vh;
+            height: 100%;
+            width: 200px; /* Set the width of the sidebar */
             z-index: 1000;
             padding-top: 3.5rem;
             background-color: #f8f9fa; /* Background color */
@@ -61,7 +61,7 @@
                         <!-- Navigation links -->
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="index.php">ข้อมูลผู้ใช้</a>
+                                <a class="nav-link active" aria-current="page" href="admin-user.php">ข้อมูลผู้ใช้</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">ราการสินค้า</a>
@@ -86,7 +86,7 @@
             </main>
         </div>
     </div>
-
+    
     <!-- Bootstrap bundle (includes Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>

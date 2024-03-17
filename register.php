@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: login.php");
             exit();
         } else {
-            $errors[] = "ไม่สามารถาสร้างข้อมูลได้.";
+            $errors[] = ".";
         }
     }
 

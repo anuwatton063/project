@@ -10823,7 +10823,12 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
- 
+
+  
+  .container-fluid {
+    padding-left: 250px; /* Adjust this value to match the width of the sidebar */
+}
+
 
 
 }
