@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +31,7 @@
         }
         #sidebar .nav-link.active {
             font-weight: bold; /* Active link font weight */
-            color: #0d6efd; /* Active link color */
+            color: #495057; /* Active link color */
         }
         #sidebar .dropdown-menu {
             background-color: #f8f9fa; /* Dropdown menu background color */
@@ -55,15 +56,15 @@
                     <div class="sidebar-sticky">
                         <!-- Logo -->
                         <div class="d-flex justify-content-center mb-4">
-                            <a class="navbar-brand" href="#">Start Bootstrap</a>
+                            <a class="navbar-brand" href="#">Admin</a>
                         </div>
                         <!-- Navigation links -->
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="index.php">Home</a>
+                                <a class="nav-link active" aria-current="page" href="index.php">ข้อมูลผู้ใช้</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">About</a>
+                                <a class="nav-link" href="#">ราการสินค้า</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
