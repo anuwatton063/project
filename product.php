@@ -12,7 +12,6 @@ if ($user_type_ID != 1){
     exit(); // Ensure script execution stops after redirection
 }
 
-
 // Define the number of products to display per page
 $products_per_page = 15;
 
@@ -29,19 +28,55 @@ $result = mysqli_query($conn, $sql);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Product Editor</title>
-    <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <!-- Bootstrap CSS-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Shop Homepage - Start Bootstrap Template</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@5.3.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+    <style>
+        /* Custom button style */
+        .edit-btn {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .edit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .add-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .add-btn:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1 class="mt-4">Product Editor</h1>
+        <a class="add-btn" href="product-add.php">Add Product</a> <!-- Add Product button -->
         <table class="table">
             <thead>
                 <tr>
@@ -64,6 +99,34 @@ $result = mysqli_query($conn, $sql);
                 <?php
                 if (mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
+                        // Define base directory for image uploads
+                        $base_dir = "../project/png/";
+
+                        // Fetch image paths
+                        $cover_image_path = $base_dir . $row["product_cover_image"];
+                        $image1_path = $base_dir . $row["product_Image1"];
+                        $image2_path = $base_dir . $row["product_Image2"];
+
+                        // Check if the paths are not empty and the files exist
+                        if (!empty($row["product_cover_image"]) && file_exists($cover_image_path)) {
+                            $cover_image_html = "<img src='$cover_image_path' alt='Cover Image' width='100' />";
+                        } else {
+                            $cover_image_html = "No Image Available";
+                        }
+
+                        if (!empty($row["product_Image1"]) && file_exists($image1_path)) {
+                            $image1_html = "<img src='$image1_path' alt='Image 1' width='100' />";
+                        } else {
+                            $image1_html = "No Image Available";
+                        }
+
+                        if (!empty($row["product_Image2"]) && file_exists($image2_path)) {
+                            $image2_html = "<img src='$image2_path' alt='Image 2' width='100' />";
+                        } else {
+                            $image2_html = "No Image Available";
+                        }
+
+                        // Output row with image HTML
                         echo "<tr>";
                         echo "<td>" . $row["product_ID"] . "</td>";
                         echo "<td>" . $row["product_type_ID"] . "</td>";
@@ -73,11 +136,11 @@ $result = mysqli_query($conn, $sql);
                         echo "<td>" . $row["product_stock"] . "</td>";
                         echo "<td>" . $row["product_name"] . "</td>";
                         echo "<td>" . $row["product_detail"] . "</td>";
-                        echo "<td>" . $row["product_cover_image"] . "</td>";
+                        echo "<td>$cover_image_html</td>";
                         echo "<td>" . $row["product_price"] . "</td>";
-                        echo "<td>" . $row["product_Image1"] . "</td>";
-                        echo "<td>" . $row["product_Image2"] . "</td>";
-                        echo "<td><a href='product-edit.php?id=" . $row["product_ID"] . "'>Edit</a></td>"; // Edit link
+                        echo "<td>$image1_html</td>";
+                        echo "<td>$image2_html</td>";
+                        echo "<td><a class='edit-btn' href='product-edit.php?id=" . $row["product_ID"] . "'>Edit</a></td>"; // Edit link with custom class
                         echo "</tr>";
                     }
                 } else {
