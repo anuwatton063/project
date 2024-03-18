@@ -12,6 +12,7 @@ if ($user_type_ID != 1){
     exit(); // Ensure script execution stops after redirection
 }
 
+
 // Define the number of products to display per page
 $products_per_page = 15;
 
@@ -32,7 +33,7 @@ $result = mysqli_query($conn, $sql);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Product List</title>
+    <title>Product Editor</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Bootstrap CSS-->
@@ -40,7 +41,7 @@ $result = mysqli_query($conn, $sql);
 </head>
 <body>
     <div class="container">
-        <h1 class="mt-4">Product List</h1>
+        <h1 class="mt-4">Product Editor</h1>
         <table class="table">
             <thead>
                 <tr>
@@ -56,6 +57,7 @@ $result = mysqli_query($conn, $sql);
                     <th>Product Price</th>
                     <th>Product Image 1</th>
                     <th>Product Image 2</th>
+                    <th>Action</th> <!-- New column for editing actions -->
                 </tr>
             </thead>
             <tbody>
@@ -75,10 +77,11 @@ $result = mysqli_query($conn, $sql);
                         echo "<td>" . $row["product_price"] . "</td>";
                         echo "<td>" . $row["product_Image1"] . "</td>";
                         echo "<td>" . $row["product_Image2"] . "</td>";
+                        echo "<td><a href='product-edit.php?id=" . $row["product_ID"] . "'>Edit</a></td>"; // Edit link
                         echo "</tr>";
                     }
                 } else {
-                    echo "<tr><td colspan='12'>No products found.</td></tr>";
+                    echo "<tr><td colspan='13'>No products found.</td></tr>";
                 }
                 ?>
             </tbody>

@@ -40,8 +40,20 @@
                             echo '<a class="btn btn-outline-dark me-2" href="admin.php">admin</a>';
                         }
                         
-                        // Display welcome message and Logout button
+                        // Display dropdown menu for Edit Profile and Edit Address
+                        echo '
+                            <div class="dropdown">
+                                <button class="btn btn-outline-dark me-2 dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Edit
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li><a class="dropdown-item" href="user_edit.php">Edit Profile</a></li>
+                                    <li><a class="dropdown-item" href="user_address.php">Edit Address</a></li>
+                                </ul>
+                            </div>
+                        ';
                         
+                        // Display Welcome message and Logout button
                         echo '<a class="btn btn-outline-dark me-2" href="logout.php">Logout</a>';
                     } else {
                         // If user data cannot be retrieved, display Login button
@@ -53,9 +65,6 @@
                 }
                 $conn->close();
             ?>
-
-
-
 
             <a class="btn btn-outline-dark me-2" href="cart.php">Cart</a> 
         </div>
