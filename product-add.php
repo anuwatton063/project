@@ -70,6 +70,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Add New Product</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <style>
+        #product_detail {
+            width: 100%;
+            height: 150px; /* ปรับขนาดตามที่ต้องการ */
+            resize: vertical; /* ทำให้สามารถขยายความสูงได้เฉพาะ */
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -113,16 +120,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <!-- Product Detail -->
             <label for="product_detail">Product Detail:</label><br>
-            <input type="text" id="product_detail" name="product_detail" required><br>
+            <textarea id="product_detail" name="product_detail" rows="4" required></textarea><br>
+
+            <!-- Product Price -->
+            <label for="product_price">Product Price:</label><br>
+            <input type="number" id="product_price" name="product_price" required><br>
 
             <!-- Product Cover Image -->
             <label for="product_cover_image">Product Cover Image:</label><br>
             <input type="file" id="product_cover_image" name="product_cover_image" required onchange="previewImage('product_cover_image', 'coverImagePreview')"><br>
             <img id="coverImagePreview" src="#" alt="Cover Image Preview" style="max-width: 200px; max-height: 200px; display: none;"><br>
-
-            <!-- Product Price -->
-            <label for="product_price">Product Price:</label><br>
-            <input type="number" id="product_price" name="product_price" required><br>
 
             <!-- Product Image 1 -->
             <label for="product_Image1">Product Image 1:</label><br>

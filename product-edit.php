@@ -120,6 +120,14 @@ $row = mysqli_fetch_assoc($result); // Fetch product details
     <title>Edit Product</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <style>
+        /* ปรับขนาดและพฤติกรรมของช่อง Product Detail */
+        #product_detail {
+            width: 100%; /* ขยายความกว้างเต็มระยะ */
+            height: 100px; /* กำหนดความสูงของช่อง */
+            resize: vertical; /* อนุญาตให้ขยายขนาดแนวตั้ง */
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -172,16 +180,16 @@ $row = mysqli_fetch_assoc($result); // Fetch product details
             <input type="text" id="product_name" name="product_name" value="<?php echo $row['product_name']; ?>"><br>
 
             <label for="product_detail">Product Detail:</label><br>
-            <input type="text" id="product_detail" name="product_detail" value="<?php echo $row['product_detail']; ?>"><br>
+            <textarea id="product_detail" name="product_detail"><?php echo $row['product_detail']; ?></textarea><br>
+
+            <label for="product_price">Product Price:</label><br>
+            <input type="number" id="product_price" name="product_price" value="<?php echo $row['product_price']; ?>"><br>
 
             <label for="product_cover_image">Product Cover Image:</label><br>
             <input type="file" id="product_cover_image" name="product_cover_image" onchange="previewImage(this, 'coverImagePreview')"><br>
             <?php if (!empty($row['product_cover_image'])): ?>
                 <img id="coverImagePreview" src="../project/png/<?php echo $row['product_cover_image']; ?>" alt="Product Cover Image" style="max-width: 200px;"><br>
             <?php endif; ?>
-
-            <label for="product_price">Product Price:</label><br>
-            <input type="number" id="product_price" name="product_price" value="<?php echo $row['product_price']; ?>"><br>
 
             <label for="product_Image1">Product Image 1:</label><br>
             <input type="file" id="product_Image1" name="product_Image1" onchange="previewImage(this, 'image1Preview')"><br>

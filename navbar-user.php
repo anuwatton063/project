@@ -14,8 +14,10 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="index.php">All Products</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="">Popular Items</a></li>
-                        <li><a class="dropdown-item" href="">New Arrivals</a></li>
+                        <li><a class="dropdown-item" href="">โทรศัพท์</a></li>
+                        <li><a class="dropdown-item" href="">หูฟัง</a></li>
+                        <li><a class="dropdown-item" href="">เคส</a></li>
+                        <li><a class="dropdown-item" href="">สายชาร์จ</a></li>
                     </ul>
                 </li>
             </ul>
@@ -63,7 +65,7 @@
                     // If not logged in, display the Login button
                     echo '<a class="btn btn-outline-dark me-2" href="login.php">Login</a>';
                 }
-                $conn->close();
+                
             ?>
 
             <a class="btn btn-outline-dark me-2" href="cart.php">Cart</a> 

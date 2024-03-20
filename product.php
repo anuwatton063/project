@@ -72,41 +72,46 @@ $result = mysqli_query($conn, $sql);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Editor</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!-- Favicon-->
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@5.3.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
     <style>
         /* Custom button style */
-        .edit-btn {
+        .edit-btn,
+        .delete-btn {
             display: inline-block;
             padding: 5px 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
             border-radius: 5px;
             text-decoration: none;
             transition: background-color 0.3s;
+            width: 80px; /* Set width for buttons */
+            text-align: center; /* Center align text in buttons */
+        }
+
+        .edit-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
         }
 
         .edit-btn:hover {
             background-color: #0056b3;
         }
 
-        .delete-btn {
-            display: inline-block;
-            padding: 5px 10px;
-            background-color: #dc3545; /* Red color */
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-
         .delete-btn:hover {
-            background-color: #c82333; /* Darker red on hover */
+            background-color: #c82333;
         }
 
         /* Style for sorting buttons */
@@ -134,6 +139,27 @@ $result = mysqli_query($conn, $sql);
         .sort-desc.active {
             color: green; /* Color for active sorting */
         }
+
+        /* Add border and background color to table */
+        .table {
+            border: 1px solid #dee2e6; /* Table border */
+        }
+
+        th,
+        td {
+            border: 1px solid #dee2e6; /* Border between rows */
+            padding: 8px; /* Padding from edge */
+            vertical-align: middle; /* Vertical alignment of content */
+        }
+
+        thead {
+            background-color: #f8f9fa; /* Background color of table head */
+        }
+
+        .btn-container {
+            white-space: nowrap; /* Prevent buttons from wrapping */
+        }
+        
     </style>
 </head>
 <body>
@@ -156,8 +182,7 @@ $result = mysqli_query($conn, $sql);
         <table class="table">
             <thead>
                 <tr>
-                    <th><a href="?sort=product_ID<?= $sort == 'product_ID' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_ID' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product ID</a></th>
-                    <th><a href="?sort=type_name<?= $sort == 'type_name' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'type_name' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product Type</a></th>
+                    <th><a href="?sort=product_ID<?= $sort == 'product_ID' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_ID' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product ID</a></th><th><a href="?sort=type_name<?= $sort == 'type_name' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'type_name' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product Type</a></th>
                     <th><a href="?sort=brand_name<?= $sort == 'brand_name' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'brand_name' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product Brand</a></th>
                     <th><a href="?sort=product_color<?= $sort == 'product_color' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_color' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product Color</a></th>
                     <th><a href="?sort=Phone_capacity<?= $sort == 'Phone_capacity' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'Phone_capacity' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Phone Capacity</a></th>
@@ -202,23 +227,29 @@ $result = mysqli_query($conn, $sql);
                             $image2_html = "No Image Available";
                         }
 
-                        // Output row with image HTML
-                        echo "<tr>";
-                        echo "<td>" . $row["product_ID"] . "</td>";
-                        echo "<td>" . $row["type_name"] . "</td>";
-                        echo "<td>" . $row["brand_name"] . "</td>";
-                        echo "<td>" . $row["product_color"] . "</td>";
-                        echo "<td>" . $row["Phone_capacity"] . "</td>";
-                        echo "<td>" . $row["product_stock"] . "</td>";
-                        echo "<td>" . $row["product_name"] . "</td>";
-                        echo "<td>" . $row["product_detail"] . "</td>";
-                        echo "<td>$cover_image_html</td>";
-                        echo "<td>" . $row["product_price"] . "</td>";
-                        echo "<td>$image1_html</td>";
-                        echo "<td>$image2_html</td>";
-                        echo "<td><a class='edit-btn' href='product-edit.php?id=" . $row["product_ID"] . "'>Edit</a>"; // Edit link with custom class
-                        echo "<form method='POST' onsubmit='return confirm(\"Are you sure you want to delete this product?\")' style='display:inline;'><input type='hidden' name='delete_id' value='" . $row["product_ID"] . "'><button type='submit' class='delete-btn ml-2'>Delete</button></form></td>"; // Delete button with confirmation form
-                        echo "</tr>";
+                            echo "<tr>";
+                            echo "<td>" . $row["product_ID"] . "</td>";
+                            echo "<td>" . $row["type_name"] . "</td>";
+                            echo "<td>" . $row["brand_name"] . "</td>";
+                            echo "<td>" . $row["product_color"] . "</td>";
+                            echo "<td>" . $row["Phone_capacity"] . "</td>";
+                            echo "<td>" . $row["product_stock"] . "</td>";
+                            echo "<td>" . $row["product_name"] . "</td>";
+                            echo "<td>";
+                            if (strlen($row["product_detail"]) > 20) {
+                                echo substr($row["product_detail"], 0, 20) . "..."; // Truncate the text if it exceeds 20 characters
+                            } else {
+                                echo $row["product_detail"];
+                            }
+                            echo "</td>";
+                            echo "<td>$cover_image_html</td>";
+                            echo "<td>" . $row["product_price"] . "</td>";
+                            echo "<td>$image1_html</td>";
+                            echo "<td>$image2_html</td>";
+                            echo "<td class='btn-container'><a class='edit-btn' href='product-edit.php?id=" . $row["product_ID"] . "'>Edit</a>";
+                            // Delete button
+                            echo "<form method='POST' onsubmit='return confirm(\"Are you sure you want to delete this product?\")' style='display:inline;'><input type='hidden' name='delete_id' value='" . $row["product_ID"] . "'><button type='submit' class='delete-btn'>Delete</button></form></td>";
+                            echo "</tr>";
                     }
                 } else {
                     echo "<tr><td colspan='13'>No products found.</td></tr>";
