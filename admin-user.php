@@ -32,7 +32,7 @@ if (isset($_GET['search'])) {
 // Additional condition for SQL query based on search query
 $search_condition = '';
 if ($search_query !== '') {
-    $search_condition = "AND (ui.username LIKE '%$search_query%' OR ui.fname LIKE '%$search_query%' OR ui.lname LIKE '%$search_query%' OR ui.email LIKE '%$search_query%' OR ut.user_type_name LIKE '%$search_query%')"; // Adjust as needed
+    $search_condition = "AND (ui.user_ID LIKE '%$search_query%' OR ui.username LIKE '%$search_query%' OR ui.fname LIKE '%$search_query%' OR ui.lname LIKE '%$search_query%' OR ui.email LIKE '%$search_query%' OR ut.user_type_name LIKE '%$search_query%')"; // Include user_ID in search
 }
 
 // Initialize user type filter variable
