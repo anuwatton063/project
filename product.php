@@ -31,7 +31,7 @@ if(isset($_POST['delete_id'])) {
 }
 
 // Define the number of products to display per page
-$products_per_page = 15;
+$products_per_page = 10;
 
 // Determine the current page number
 $current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
@@ -68,11 +68,35 @@ $sql .= " ORDER BY $sort $order";
 $sql .= " LIMIT $offset, $products_per_page";
 
 $result = mysqli_query($conn, $sql);
+
+// Query to fetch total number of products
+$total_products_query = "SELECT COUNT(*) as total FROM `products_phone`";
+$total_result = mysqli_query($conn, $total_products_query);
+$total_row = mysqli_fetch_assoc($total_result);
+$total_products = $total_row['total'];
+
+// Calculate total pages
+$total_pages = ceil($total_products / $products_per_page);
+
+// Pagination links
+$pagination_links = "";
+if ($total_pages > 1) {
+    $pagination_links .= "<div class='row'>
+                            <div class='col-md-12'>
+                                <ul class='pagination justify-content-center'>";
+    for ($i = 1; $i <= $total_pages; $i++) {
+        $active = $i == $current_page ? "active" : "";
+        $pagination_links .= "<li class='page-item $active'><a class='page-link' href='?page=$i&search=" . htmlentities($search) . "'>$i</a></li>";
+    }
+    $pagination_links .= "</ul></div></div>";
+}
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
@@ -159,7 +183,7 @@ $result = mysqli_query($conn, $sql);
         .btn-container {
             white-space: nowrap; /* Prevent buttons from wrapping */
         }
-        
+
     </style>
 </head>
 <body>
@@ -182,7 +206,8 @@ $result = mysqli_query($conn, $sql);
         <table class="table">
             <thead>
                 <tr>
-                    <th><a href="?sort=product_ID<?= $sort == 'product_ID' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_ID' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product ID</a></th><th><a href="?sort=type_name<?= $sort == 'type_name' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'type_name' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product Type</a></th>
+                    <th><a href="?sort=product_ID<?= $sort == 'product_ID' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_ID' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product ID</a></th>
+                    <th><a href="?sort=type_name<?= $sort == 'type_name' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'type_name' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product Type</a></th>
                     <th><a href="?sort=brand_name<?= $sort == 'brand_name' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'brand_name' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product Brand</a></th>
                     <th><a href="?sort=product_color<?= $sort == 'product_color' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_color' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product Color</a></th>
                     <th><a href="?sort=Phone_capacity<?= $sort == 'Phone_capacity' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'Phone_capacity' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Phone Capacity</a></th>
@@ -227,29 +252,29 @@ $result = mysqli_query($conn, $sql);
                             $image2_html = "No Image Available";
                         }
 
-                            echo "<tr>";
-                            echo "<td>" . $row["product_ID"] . "</td>";
-                            echo "<td>" . $row["type_name"] . "</td>";
-                            echo "<td>" . $row["brand_name"] . "</td>";
-                            echo "<td>" . $row["product_color"] . "</td>";
-                            echo "<td>" . $row["Phone_capacity"] . "</td>";
-                            echo "<td>" . $row["product_stock"] . "</td>";
-                            echo "<td>" . $row["product_name"] . "</td>";
-                            echo "<td>";
-                            if (strlen($row["product_detail"]) > 20) {
-                                echo substr($row["product_detail"], 0, 20) . "..."; // Truncate the text if it exceeds 20 characters
-                            } else {
-                                echo $row["product_detail"];
-                            }
-                            echo "</td>";
-                            echo "<td>$cover_image_html</td>";
-                            echo "<td>" . $row["product_price"] . "</td>";
-                            echo "<td>$image1_html</td>";
-                            echo "<td>$image2_html</td>";
-                            echo "<td class='btn-container'><a class='edit-btn' href='product-edit.php?id=" . $row["product_ID"] . "'>Edit</a>";
-                            // Delete button
-                            echo "<form method='POST' onsubmit='return confirm(\"Are you sure you want to delete this product?\")' style='display:inline;'><input type='hidden' name='delete_id' value='" . $row["product_ID"] . "'><button type='submit' class='delete-btn'>Delete</button></form></td>";
-                            echo "</tr>";
+                        echo "<tr>";
+                        echo "<td>" . $row["product_ID"] . "</td>";
+                        echo "<td>" . $row["type_name"] . "</td>";
+                        echo "<td>" . $row["brand_name"] . "</td>";
+                        echo "<td>" . $row["product_color"] . "</td>";
+                        echo "<td>" . $row["Phone_capacity"] . "</td>";
+                        echo "<td>" . $row["product_stock"] . "</td>";
+                        echo "<td>" . $row["product_name"] . "</td>";
+                        echo "<td>";
+                        if (strlen($row["product_detail"]) > 20) {
+                            echo substr($row["product_detail"], 0, 20) . "..."; // Truncate the text if it exceeds 20 characters
+                        } else {
+                            echo $row["product_detail"];
+                        }
+                        echo "</td>";
+                        echo "<td>$cover_image_html</td>";
+                        echo "<td>" . $row["product_price"] . "</td>";
+                        echo "<td>$image1_html</td>";
+                        echo "<td>$image2_html</td>";
+                        echo "<td class='btn-container'><a class='edit-btn' href='product-edit.php?id=" . $row["product_ID"] . "'>Edit</a>";
+                                                // Delete button
+                        echo "<form method='POST' onsubmit='return confirm(\"Are you sure you want to delete this product?\")' style='display:inline;'><input type='hidden' name='delete_id' value='" . $row["product_ID"] . "'><button type='submit' class='delete-btn'>Delete</button></form></td>";
+                        echo "</tr>";
                     }
                 } else {
                     echo "<tr><td colspan='13'>No products found.</td></tr>";
@@ -257,6 +282,19 @@ $result = mysqli_query($conn, $sql);
                 ?>
             </tbody>
         </table>
+        <!-- Pagination links -->
+        <?php
+        // Check if pagination should be displayed
+        if ($total_pages > 1) {
+            echo "<div class='row'>
+                    <div class='col-md-12'>
+                        $pagination_links
+                    </div>
+                  </div>";
+        }
+        ?>
     </div>
 </body>
 </html>
+
+

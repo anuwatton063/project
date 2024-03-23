@@ -1,6 +1,16 @@
 <?php
 include('condb.php');
 include 'navbar-user.php';
+
+// Number of products to display per page
+$productsPerPage = 24;
+
+// Current page number, default to 1 if not provided
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+
+// Calculate the offset for the SQL query
+$offset = ($page - 1) * $productsPerPage;
+
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +24,7 @@ include 'navbar-user.php';
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@5.3.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
     <style>
@@ -29,18 +39,39 @@ include 'navbar-user.php';
         .product-block {
             margin-bottom: -140px; /* Adjust the margin between product type blocks */
         }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 100px; /* Move the pagination down by 100px */
+        }
+        .pagination a {
+            padding: 8px 16px;
+            margin: 0 4px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+        }
+        .pagination a.active {
+            background-color: #007bff;
+            color: #fff;
+            border-color: #007bff;
+        }
     </style>
 </head>
 <body>
 <?php
 
-// Fetch all products from the database
+// Fetch products for the current page
 $sql = "SELECT products_phone.*, products_types.type_name 
         FROM products_phone 
         INNER JOIN products_types 
         ON products_phone.product_type_ID = products_types.product_type_ID 
-        ORDER BY products_phone.product_type_ID"; // Assuming 'products_phone' and 'products_types' are the names of your tables
+        ORDER BY products_phone.product_type_ID 
+        LIMIT $offset, $productsPerPage";
+
 $result = mysqli_query($conn, $sql);
+
 if ($result && mysqli_num_rows($result) > 0) {
     $current_type = '';
     while ($row = mysqli_fetch_assoc($result)) {
@@ -81,10 +112,23 @@ if ($result && mysqli_num_rows($result) > 0) {
     }
     // Close the last section
     echo '</div></div></section>';
+
+    // Pagination links
+    $totalPagesSql = "SELECT COUNT(*) as count FROM products_phone";
+    $totalPagesResult = mysqli_query($conn, $totalPagesSql);
+    $totalRows = mysqli_fetch_assoc($totalPagesResult)['count'];
+    $totalPages = ceil($totalRows / $productsPerPage);
+
+    echo '<div class="pagination">';
+    for ($i = 1; $i <= $totalPages; $i++) {
+        echo '<a href="?page=' . $i . '"' . ($page == $i ? ' class="active"' : '') . '>' . $i . '</a>';
+    }
+    echo '</div>';
 } else {
     // No products found
     echo "No products found.";
 }
+
 ?>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

@@ -15,9 +15,9 @@
                         <li><a class="dropdown-item" href="index.php">All Products</a></li>
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="product_phone.php">โทรศัพท์</a></li>
-                        <li><a class="dropdown-item" href="">หูฟัง</a></li>
-                        <li><a class="dropdown-item" href="">เคส</a></li>
-                        <li><a class="dropdown-item" href="">สายชาร์จ</a></li>
+                        <li><a class="dropdown-item" href="product_headphone.php">หูฟัง</a></li>
+                        <li><a class="dropdown-item" href="product_case.php">เคส</a></li>
+                        <li><a class="dropdown-item" href="product_Charging_cable.php">สายชาร์จ</a></li>
                     </ul>
                 </li>
             </ul>
