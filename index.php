@@ -17,14 +17,6 @@ include 'navbar-user.php';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@5.3.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
-    <header class="bg-dark py-5">
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Shop in style</h1>
-                <p class="lead fw-normal text-white-50 mb-0">With this shop homepage template</p>
-            </div>
-        </div>
-    </header>
     <style>
         /* Custom styles can be added here */
         .card {
@@ -81,7 +73,7 @@ if ($result && mysqli_num_rows($result) > 0) {
                         </div>
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="detail.php?id=' . $row['product_ID'] . '">View</a></div>
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add</a></div>
+                            <div class="text-center"><button class="btn btn-outline-dark mt-auto" onclick="addToCartBackend(' . $row['product_ID'] . ', \'' . $row['product_name'] . '\', ' . $row['product_price'] . ', \'' . $row['product_cover_image'] . '\')">Add</button></div>
                         </div>
                     </div>
                 </div>';
@@ -95,8 +87,37 @@ if ($result && mysqli_num_rows($result) > 0) {
 }
 ?>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script src="js/scripts.js"></script>
+
+<script>
+function addToCartBackend(productId, productName, productPrice, productImage) {
+    var quantityInput = 1; // Default quantity, can be changed as needed
+
+    jQuery.ajax({
+        url: 'cartadd.php',
+        method: 'POST',
+        data: {
+            productId: productId,
+            productName: productName,
+            quantity: quantityInput,
+            productPrice: productPrice,
+            productImage: productImage // Pass the product image URL
+        },
+        success: function(response) {
+            console.log('Item added to cart successfully');
+            console.log('Response:', response); // Log the response received from the server
+            // You can add further actions here, like displaying a success message
+        },
+        error: function(xhr, status, error) {
+            console.error('Error adding item to cart:', error);
+            // You can add further error handling here, like displaying an error message to the user
+        }
+    });
+}
+</script>
 </body>
 </html>

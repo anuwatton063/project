@@ -97,7 +97,10 @@ if(isset($_GET['id'])) {
                 <div class="col-md-6">
                     <h1 class="display-5 fw-bolder"><?php echo $row['product_name']; ?></h1>
                     <div class="fs-5 mb-3">
-                        <span><?php echo 'à¸¿'. $row['product_price']; ?></span>
+                        <span><?php echo '฿'. $row['product_price']; ?></span>
+                        <?php if (!empty($row['product_color'])): ?>
+                            <span class="ms-3">Color: <?php echo $row['product_color']; ?></span>
+                        <?php endif; ?>
                     </div>
                     <p class="lead">In Stock: <?php echo $row['product_stock']; ?></p>
                     <div class="d-flex">
