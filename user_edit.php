@@ -1,6 +1,4 @@
 <?php
-// Start the session
-
 
 // Include necessary files and check user type
 include('navbar-user.php');
@@ -58,8 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $update_query = mysqli_query($conn, $update_sql);
 
     if ($update_query) {
-        $_SESSION['success_message'] = "User data updated successfully.";
-        header("Location: ".$_SERVER['PHP_SELF']); // Redirect back to form with success message
+        
+        header("Location: user_profile.php"); // Redirect to user_profile.php after successful update
         exit();
     } else {
         $_SESSION['error_message'] = "Error updating user data"; // Handle database update error

@@ -49,7 +49,7 @@
                                     Edit
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li><a class="dropdown-item" href="user_edit.php">Edit Profile</a></li>
+                                    <li><a class="dropdown-item" href="user_profile.php">Edit Profile</a></li>
                                     <li><a class="dropdown-item" href="user_address.php">Edit Address</a></li>
                                 </ul>
                             </div>

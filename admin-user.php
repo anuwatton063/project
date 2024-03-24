@@ -112,6 +112,7 @@ $query_sql = mysqli_query($conn, $sql);
                             <th>Email</th>
                             <th>ประเถทผู้ใช้</th> <!-- New column for user type -->
                             <th>Actions</th> <!-- New column for actions -->
+                            <th>Add Address</th> <!-- New column for adding address -->
                         </tr>
                     </thead>
                     <tbody>
@@ -128,6 +129,9 @@ $query_sql = mysqli_query($conn, $sql);
                             echo "<td>";
                             echo "<a href='admin_edit_user.php?id=" . $row['user_ID'] . "' class='btn btn-primary'>แก้ไข</a>";
                             echo "<a href='delete_user.php?id=" . $row['user_ID'] . "' class='btn btn-danger' onclick='return confirm(\"คุณแน่ใจหรือไม่ว่าต้องการลบผู้ใช้คนนี้?\")'>ลบ</a>";
+                            echo "</td>";
+                            echo "<td>";
+                            echo "<a href='admin_useraddress.php?user_id=" . $row['user_ID'] . "' class='btn btn-success'>Address</a>";
                             echo "</td>";
                             echo "</tr>";
                         }

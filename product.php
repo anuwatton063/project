@@ -193,8 +193,12 @@ if ($total_pages > 1) {
             <!-- Search form -->
             <div class="col-md-6">
                 <form action="" method="GET" class="form-inline">
-                    <input type="text" name="search" class="form-control mr-2" placeholder="Search" value="<?= htmlentities($search) ?>">
-                    <button type="submit" class="btn btn-primary">Search</button>
+                    <div class="input-group"> <!-- เพิ่มคลาส input-group -->
+                        <input type="text" name="search" class="form-control mr-2" placeholder="Search" value="<?= htmlentities($search) ?>">
+                        <div class="input-group-append"> <!-- เพิ่มคลาส input-group-append -->
+                            <button type="submit" class="btn btn-primary mr-3">Search</button>
+                        </div>
+                    </div>
                 </form>
             </div>
             <!-- Add product button -->
