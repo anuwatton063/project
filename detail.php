@@ -56,6 +56,14 @@ if(isset($_GET['id'])) {
         .product-info {
             margin-top: 20px; /* Adjust as needed */
         }
+        /* Centered alert message */
+        .centered-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000; /* Ensure the message is on top of everything */
+        }
     </style>
 </head>
 <body>
@@ -99,7 +107,7 @@ if(isset($_GET['id'])) {
                     <div class="fs-5 mb-3">
                         <span><?php echo '฿'. $row['product_price']; ?></span>
                         <?php if (!empty($row['product_color'])): ?>
-                            <span class="ms-3">Color: <?php echo $row['product_color']; ?></span>
+                            <span class="ms-3">Color: <?php echo$row['product_color']; ?></span>
                         <?php endif; ?>
                     </div>
                     <p class="lead">In Stock: <?php echo $row['product_stock']; ?></p>
@@ -117,11 +125,7 @@ if(isset($_GET['id'])) {
         </div>
     </section>
     <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p class="m-0">&copy; Your Website 2023 </p>
-        </div>
-    </footer>
+    <div id="alert-message-container"></div>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -145,6 +149,20 @@ if(isset($_GET['id'])) {
             success: function(response) {
                 console.log('Item added to cart successfully');
                 console.log('Response:', response); // Log the response received from the server
+
+                // Display a message on the webpage
+                var alertMessage = '<div class="alert alert-success alert-dismissible fade show centered-alert" role="alert">';
+                alertMessage += '<strong>Success!</strong> ได้นำสินค้าเข้าตะกร้าแล้ว';
+                alertMessage += '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                alertMessage += '</div>';
+
+                // Append the message to the alert-message-container div
+                $('#alert-message-container').html(alertMessage);
+
+                // Hide the alert message after 3 seconds
+                setTimeout(function() {
+                    $('#alert-message-container').html('');
+                }, 3000);
             },
             error: function(xhr, status, error) {
                 console.error('Error adding item to cart:', error);
@@ -162,3 +180,4 @@ if(isset($_GET['id'])) {
     echo "Product ID not provided.";
 }
 ?>
+

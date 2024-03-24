@@ -12,15 +12,21 @@ if (!isset($_SESSION['user_ID'])) {
 // Get user ID from session
 $user_ID = $_SESSION['user_ID'];
 
-// Delete address if delete button is clicked
-if (isset($_POST['delete_address'])) {
+// Check if delete confirmation is submitted
+if (isset($_POST['confirm_delete'])) {
     $address_id = $_POST['address_id'];
-    // Display a confirmation dialog before deletion
-    echo "<script>
-            if(confirm('Are you sure you want to delete this address?')) {
-                window.location.href = 'delete_address.php?address_id=$address_id';
-            }
-          </script>";
+    // Query to delete address
+    $delete_sql = "DELETE FROM address WHERE address_ID = ?";
+    $delete_stmt = $conn->prepare($delete_sql);
+    $delete_stmt->bind_param("i", $address_id);
+    if ($delete_stmt->execute()) {
+        // Redirect back to this page after deletion
+        header("Location: ".$_SERVER['PHP_SELF']);
+        exit();
+    } else {
+        // Handle deletion error
+        echo "Error deleting address.";
+    }
 }
 
 // Query to fetch user's addresses
@@ -87,7 +93,34 @@ $stmt->close();
                         <td>
                             <form method="POST" style="display: inline-block;">
                                 <input type="hidden" name="address_id" value="<?php echo $row['address_ID']; ?>">
-                                <button type="submit" name="delete_address" class="btn btn-danger">Delete</button>
+                                <!-- Button to trigger confirmation modal -->
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDelete<?php echo $row['address_ID']; ?>">
+                                    Delete
+                                </button>
+
+                                <!-- Modal for delete confirmation -->
+                                <div class="modal fade" id="confirmDelete<?php echo $row['address_ID']; ?>" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="confirmDeleteLabel">Confirm Delete</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                คุณต้องการลบข้อมูลที่อยู่ของคุณหรือไม่
+                                            </div>
+                                            <div class="modal-footer">
+                                                <!-- Button to cancel deletion -->
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <!-- Form to submit delete confirmation -->
+                                                <form method="POST">
+                                                    <input type="hidden" name="address_id" value="<?php echo $row['address_ID']; ?>">
+                                                    <button type="submit" name="confirm_delete" class="btn btn-danger">Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                             <a href="user_addressEdit.php?address_id=<?php echo $row['address_ID']; ?>" class="btn btn-primary">Edit</a>
                         </td>

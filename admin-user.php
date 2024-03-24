@@ -1,16 +1,17 @@
 <?php
 include 'navbar-user.php';
 include('condb.php');
+
 include 'checkuser.php';
 
-$user_type_ID = getUserTypeID();
-if ($user_type_ID == 1) {
-    include 'navbar-admin.php';
-}
-if ($user_type_ID != 1){
-    header("Location: index.php"); // Redirect to index.php
-    exit(); // Ensure script execution stops after redirection
-}
+        $user_type_ID = getUserTypeID();
+        if ($user_type_ID == 1) {
+            include 'navbar-admin.php';
+        }
+        if ($user_type_ID != 1){
+            header("Location: index.php"); // Redirect to index.php
+            exit(); // Ensure script execution stops after redirection
+        }
 
 // Define the number of users to display per page
 $users_per_page = 15;
@@ -97,7 +98,7 @@ $query_sql = mysqli_query($conn, $sql);
                 <?php
                 // Check if there's a message to display
                 if (isset($_GET['deleted']) && $_GET['deleted'] == 1) {
-                    echo '<div class="alert alert-success" role="alert">ลบผู้ใช้เรียบร้อยแล้ว</div>';
+                    echo '<div id="successAlert" class="alert alert-success" role="alert">ลบผู้ใช้เรียบร้อยแล้ว</div>';
                 } elseif (isset($_GET['error']) && $_GET['error'] == 1) {
                     echo '<div class="alert alert-danger" role="alert">เกิดข้อผิดพลาดในการลบผู้ใช้</div>';
                 }
@@ -155,6 +156,25 @@ $query_sql = mysqli_query($conn, $sql);
                     echo "</nav>";
                 }
                 ?>
+
+                <script>
+                    // Function to show the success message
+                    function showSuccessMessage() {
+                        var alertBox = document.getElementById('successAlert');
+                        alertBox.style.display = 'block'; // Show the alert box
+
+                        // Hide the alert box after 5 seconds
+                        setTimeout(function() {
+                            alertBox.style.display = 'none';
+                        }, 5000); // 5 seconds
+                    }
+
+                    // Call the function when the page loads
+                    window.onload = function() {
+                        showSuccessMessage();
+                    };
+                </script>
+
             </div>
         </div>
     </div>

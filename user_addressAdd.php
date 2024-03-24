@@ -29,7 +29,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($stmt->execute()) {
         // Data inserted successfully
-        echo "<script>alert('Data inserted successfully'); window.location.href = 'index.php';</script>";
+        echo "<script>
+                var confirmed = confirm('Data inserted successfully. Do you want to go back to the address list?');
+                if (confirmed) {
+                    window.location.href = 'user_address.php';
+                }
+              </script>";
     } else {
         // Error in data insertion
         echo "<script>alert('Error: " . $stmt->error . "');</script>";
@@ -43,7 +48,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -60,7 +64,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Thailand Address Form</title>
     <link rel="stylesheet" href="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.css">
     <style>
-        *
         .container1 {
             max-width: 1000px;
             display: flex;
@@ -68,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             align-items: center;
         }
 
-        .container h2 {
+        .container1 h2 {
             margin: 20px 0;
         }
 
@@ -97,9 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     </style>
 </head>
-
 <body>
-
     <div class="container container1">
         <h2>Thailand Address Form</h2>
         <div class="form-control">
@@ -117,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="form-control">
             <span>รหัสไปรษณีย์</span>
             <input id="postcode" type="text" class="txt" placeholder="รหัสไปรษณีย์">
-               </div>
+        </div>
         <div class="form-control">
             <span>ข้อมูลที่อยู่</span>
             <input id="address" type="text" class="txt" placeholder="ข้อมูลที่อยู่">
@@ -132,12 +133,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <button id="applyBtn" class="btn1">Apply Data</button>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/JQL.min.js"></script>
     <script src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/typeahead.bundle.js"></script>
     <script src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.js"></script>
-
     <script>
         $(document).ready(function() {
             $.Thailand({
@@ -181,34 +180,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     return;
                 }
 
-                $.ajax({
-                    type: "POST",
-                    url: window.location.href,
-                    data: {
-                        user_ID: <?php echo $user_ID; ?>,
-                        sub_district: subDistrict,
-                        district: district,
-                        province: province,
-                        postcode: postcode,
-                        address: address,
-                        name: name,
-                        phone: phone
-                    },
-                    success: function(response) {
-                        console.log("Data submitted successfully:", response);
-                        alert("Data submitted successfully");
-                        // Redirect to index.php after OK is clicked
-                        window.location.href = "user_address.php";
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error submitting data:", error);
-                        alert("Error submitting data: " + error);
-                    }
-                });
+                // Confirmation dialog before submitting
+                var confirmed = confirm('Are you sure you want to apply this data?');
+                if (confirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: window.location.href,
+                        data: {
+                            user_ID: <?php echo $user_ID; ?>,
+                            sub_district: subDistrict,
+                            district: district,
+                            province: province,
+                            postcode: postcode,
+                            address: address,
+                            name: name,
+                            phone: phone
+                        },
+                        success: function(response) {
+                            console.log("Data submitted successfully:", response);
+                            alert("Data submitted successfully");
+                            // Redirect to user_address.php after OK is clicked
+                            window.location.href = "user_address.php";
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error submitting data:", error);
+                            alert("Error submitting data: " + error);
+                        }
+                    });
+                }
             });
         });
     </script>
-
 </body>
-
 </html>
