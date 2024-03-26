@@ -30,7 +30,7 @@ $offset = ($page - 1) * $productsPerPage;
     <style>
         /* Custom styles can be added here */
         .card {
-            max-width: 400px; /* Set maximum width for the card */
+            max-width: 300px; /* Set maximum width for the card */
         }
         .card-img-top {
             width: 100%; /* Set width to 100% to make it fill the container */
@@ -96,7 +96,7 @@ if ($result && mysqli_num_rows($result) > 0) {
                     echo '</div></div></section>';
                 }
                 $current_type = $row['type_name'];
-                echo '<section class="py-5 product-block"><div class="container px-4 px-lg-5 mt-5">';
+                echo '<section class="py-5 product-block"><div class="container px-4 px-lg-5 mt-4">';
                 echo '<h2>' . $current_type . '</h2><div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">';
             }
             // Output the product

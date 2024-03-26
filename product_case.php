@@ -3,7 +3,7 @@ include('condb.php');
 include 'navbar-user.php';
 
 // Number of products to display per page
-$productsPerPage = 2;
+$productsPerPage = 4;
 
 // Current page number, default to 1 if not provided
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
@@ -32,7 +32,7 @@ $offset = ($page - 1) * $productsPerPage;
     <style>
         /* Custom styles can be added here */
         .card {
-            max-width: 400px; /* Set maximum width for the card */
+            max-width: 200px; /* Set maximum width for the card */
         }
         .card-img-top {
             width: 100%; /* Set width to 100% to make it fill the container */
@@ -65,6 +65,13 @@ $offset = ($page - 1) * $productsPerPage;
             color: #fff;
             border-color: #007bff;
         }
+        .centered-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000; /* Ensure the message is on top of everything */
+        }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
@@ -84,7 +91,20 @@ $offset = ($page - 1) * $productsPerPage;
                 success: function(response) {
                     console.log('Item added to cart successfully');
                     console.log('Response:', response); // Log the response received from the server
-                    // You can add further actions here, like displaying a success message
+
+                    // Display a message on the webpage
+                    var alertMessage = '<div class="alert alert-success alert-dismissible fade show centered-alert" role="alert">';
+                    alertMessage += '<strong>Success!</strong> ได้นำสินค้าเข้าตะกร้าแล้ว';
+                    alertMessage += '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                    alertMessage += '</div>';
+
+                    // Append the message to the alert-message-container div
+                    $('#alert-message-container').html(alertMessage);
+
+                    // Hide the alert message after 3 seconds
+                    setTimeout(function() {
+                        $('#alert-message-container').html('');
+                    }, 3000);
                 },
                 error: function(xhr, status, error) {
                     console.error('Error adding item to cart:', error);
@@ -227,7 +247,7 @@ $offset = ($page - 1) * $productsPerPage;
         </div>
     </div>
 </div>
-
+<div id="alert-message-container"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/scripts.js"></script>
 </body>

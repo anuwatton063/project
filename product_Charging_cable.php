@@ -65,33 +65,53 @@ $offset = ($page - 1) * $productsPerPage;
             color: #fff;
             border-color: #007bff;
         }
+        .centered-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000; /* Ensure the message is on top of everything */
+        }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        function addToCartBackend(productId, productName, productPrice, productImage) {
-            var quantityInput = 1; // Default quantity, can be changed as needed
+    function addToCartBackend(productId, productName, productPrice, productImage) {
+        var quantityInput = 1; // Default quantity, can be changed as needed
 
-            jQuery.ajax({
-                url: 'cartadd.php',
-                method: 'POST',
-                data: {
-                    productId: productId,
-                    productName: productName,
-                    quantity: quantityInput,
-                    productPrice: productPrice,
-                    productImage: productImage // Pass the product image URL
-                },
-                success: function(response) {
-                    console.log('Item added to cart successfully');
-                    console.log('Response:', response); // Log the response received from the server
-                    // You can add further actions here, like displaying a success message
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error adding item to cart:', error);
-                    // You can add further error handling here, like displaying an error message to the user
-                }
-            });
-        }
+        jQuery.ajax({
+            url: 'cartadd.php',
+            method: 'POST',
+            data: {
+                productId: productId,
+                productName: productName,
+                quantity: quantityInput,
+                productPrice: productPrice,
+                productImage: productImage // Pass the product image URL
+            },
+            success: function(response) {
+                console.log('Item added to cart successfully');
+                console.log('Response:', response); // Log the response received from the server
+
+                // Display a message on the webpage
+                var alertMessage = '<div class="alert alert-success alert-dismissible fade show centered-alert" role="alert">';
+                alertMessage += '<strong>Success!</strong> ได้นำสินค้าเข้าตะกร้าแล้ว';
+                alertMessage += '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                alertMessage += '</div>';
+
+                // Append the message to the alert-message-container div
+                $('#alert-message-container').html(alertMessage);
+
+                // Hide the alert message after 3 seconds
+                setTimeout(function() {
+                    $('#alert-message-container').html('');
+                }, 3000);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error adding item to cart:', error);
+                // You can add further error handling here, like displaying an error message to the user
+            }
+        });
+    }
     </script>
 </head>
 <body>
@@ -227,6 +247,7 @@ $offset = ($page - 1) * $productsPerPage;
         </div>
     </div>
 </div>
+<div id="alert-message-container"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/scripts.js"></script>

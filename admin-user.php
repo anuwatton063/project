@@ -7,6 +7,7 @@ include 'checkuser.php';
         $user_type_ID = getUserTypeID();
         if ($user_type_ID == 1) {
             include 'navbar-admin.php';
+            
         }
         if ($user_type_ID != 1){
             header("Location: index.php"); // Redirect to index.php

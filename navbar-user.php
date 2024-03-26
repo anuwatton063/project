@@ -51,6 +51,7 @@
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <li><a class="dropdown-item" href="user_profile.php">Edit Profile</a></li>
                                     <li><a class="dropdown-item" href="user_address.php">Edit Address</a></li>
+                                    <li><a class="dropdown-item" href="user_order.php">order</a></li>
                                 </ul>
                             </div>
                         ';

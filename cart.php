@@ -1,5 +1,5 @@
 <?php
-// Include navbar
+// Include navbar and database connection
 include('condb.php');
 include 'navbar-user.php';
 
@@ -17,6 +17,51 @@ foreach($cartItems as &$item) {
     $totalPrice += $item['totalPrice'];
 }
 unset($item); // Unset reference variable
+
+// Fetch user addresses
+$sql = "SELECT * FROM address WHERE user_ID = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $_SESSION['user_ID']);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$stmt->close();
+// ตรวจสอบว่ามีการส่งข้อมูลมาจากฟอร์มหรือไม่
+if(isset($_POST['quantity']) && isset($_POST['item_index'])) {
+    // รับค่าจำนวนสินค้าและอินเด็กซ์ของสินค้า
+    $quantity = $_POST['quantity'];
+    $item_index = $_POST['item_index'];
+
+    // อัปเดตจำนวนสินค้าในรถเข็น
+    $_SESSION['cart'][$item_index]['quantity'] = $quantity;
+
+    // Redirect เพื่อป้องกันการส่งข้อมูลซ้ำหรือการรีเฟรชหน้าเว็บ
+    header("Location: cart.php");
+    exit();
+}
+
+// Insert data into the orders table
+if(isset($_POST['address'])) {
+    $address_ID = $_POST['address'];
+    $user_ID = $_SESSION['user_ID'];
+    $orderstatus_ID = 5; // Assuming 1 represents a pending order status
+    $shipping_status = 1; // Assuming 1 represents a pending shipping status
+    $net_price = $totalPrice;
+
+    // Insert data into orders table
+    $sql = "INSERT INTO orders (user_ID, address_ID, orderstatus_ID, shipping_status, net_price) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("iiidd", $user_ID, $address_ID, $orderstatus_ID, $shipping_status, $net_price);
+    $stmt->execute();
+    $stmt->close();
+
+    // Clear cart session
+    unset($_SESSION['cart']);
+
+    // Redirect or perform any other action after successful checkout
+    header("Location: checkout_success.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +80,7 @@ unset($item); // Unset reference variable
         .card {
             width: 100%;
             margin-bottom: 20px;
-            position: relative; /* Added */
+            position: relative;
         }
         .delete-button {
             position: absolute;
@@ -46,42 +91,105 @@ unset($item); // Unset reference variable
 </head>
 <body>
 
-    <!-- Cart items -->
-    <div class="container">
-        <h2 class="mt-5 mb-4">Shopping Cart</h2>
-        <?php if(empty($cartItems)): ?>
-            <p>Your cart is empty.</p>
-        <?php else: ?>
-            <div class="row row-cols-1 row-cols-md-2 g-4">
-                <?php foreach($cartItems as $key => $item): ?>
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo $item['productName']; ?></h5>
-                                <img src="<?php echo $item['image']; ?>" alt="Product Image" class="card-img-top" style="max-width: 200px; max-height: 200px;">
-                                <p class="card-text">Quantity: <?php echo $item['quantity']; ?></p>
-                                <p class="card-text">Price: <?php echo $item['price']; ?></p>
-                                <p class="card-text">Total Price: <?php echo $item['totalPrice']; ?></p>
-                                <form action="cart_remove.php" method="post">
-                                    <input type="hidden" name="item_index" value="<?php echo $key; ?>">
-                                    <button type="submit" class="btn btn-danger delete-button"><i class="bi bi-trash"></i></button>
-                                </form>
-                            </div>
+<div class="container">
+    <h2 class="mt-5 mb-4">Shopping Cart</h2>
+    <?php if(empty($cartItems)): ?>
+        <p>Your cart is empty.</p>
+    <?php else: ?>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <?php foreach($cartItems as $key => $item): ?>
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 25%;">
+                                            <img src="<?php echo htmlspecialchars($item['image']); ?>" alt="Product Image" class="img-fluid rounded" style="max-width: 100%; height: auto; object-fit: contain;">
+                                        </td>
+                                        <td style="width: 25%;">
+                                            <h5 class="card-title"><?php echo htmlspecialchars($item['productName']); ?></h5>
+                                            <p class="card-text">
+                                                Quantity: 
+                                                <form id="updateForm<?php echo $key; ?>" action="cart.php" method="post">
+                                                    <input type="hidden" name="item_index" value="<?php echo $key; ?>">
+                                                    <input type="number" id="inputQuantity_<?php echo $key; ?>" class="input-quantity" name="quantity" value="<?php echo $item['quantity']; ?>" min="1" step="1">
+                                                </form>
+
+                                            </p>
+                                            <p class="card-text">Total price : $<?php echo number_format($item['totalPrice'], 2); ?></p>
+                                        </td>
+                                        <td style="width: 25%; vertical-align: middle;">
+                                            <form action="cart_remove.php" method="post">
+                                                <input type="hidden" name="item_index" value="<?php echo $key; ?>">
+                                                <button type="submit" class="btn btn-danger delete-button"><i class="bi bi-trash"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            </div>
-            <div class="mt-4">
-                <p><strong>Total:</strong> <?php echo $totalPrice; ?></p>
-            </div>
-            <div class="mt-4">
-                <a href="checkout.php" class="btn btn-primary me-3">Proceed to Checkout</a>
-                <a href="index.php" class="btn btn-secondary">Continue Shopping</a>
-            </div>
-        <?php endif; ?>
-    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <div class="mt-4">
+            <p><strong>Net Total:</strong> $<?php echo number_format($totalPrice, 2); ?></p>
+        </div>
+        
+        <!-- Address selection -->
+        <div class="mt-4">
+            <form id="checkoutForm" action="cartCheckout.php" method="POST">
+                <label for="address">Select Address:</label>
+                <select name="address" id="address" class="form-select mb-3">
+                    <option value="" selected disabled>-- Select Address --</option>
+                    <?php while ($row = $result->fetch_assoc()) : ?>
+                        <option value="<?php echo htmlspecialchars($row['address_ID']); ?>"><?php echo htmlspecialchars($row['name'] . ' - ' . $row['Address_information'] . ', ' . $row['tumbon'] . ', ' . $row['amphoe'] . ', ' . $row['province'] . ', ' . $row['Zipcode']); ?></option>
+                    <?php endwhile; ?>
+                </select>
+                <button type="button" class="btn btn-primary" id="checkoutBtn" disabled onclick="confirmCheckout()">Proceed to Checkout</button>
+            </form>
+        </div>
 
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <?php endif; ?>
+
+</div>
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+    // Function to display confirmation dialog before proceeding with checkout
+    function confirmCheckout() {
+        if (confirm("Are you sure you want to proceed with checkout?")) {
+            document.getElementById("checkoutForm").submit(); // Submit the form if user confirms
+        }
+    }
+
+    $(document).ready(function() {
+        // Submit the form on quantity change
+        $('input[name="quantity"]').on('change', function() {
+            var quantity = parseInt($(this).val()); // Parse the quantity value as an integer
+            if (quantity >= 1) { // Check if the quantity is at least 1
+                $(this).closest('form').submit(); // Submit the form if quantity is valid
+            } else {
+                $(this).val(1); // Set the quantity to 1 if it's less than 1
+            }
+        });
+
+        // Enable/disable checkout button based on address selection
+        $('#address').on('change', function() {
+            if ($(this).val() !== "") {
+                $('#checkoutBtn').prop('disabled', false);
+            } else {
+                $('#checkoutBtn').prop('disabled', true);
+            }
+        });
+    });
+</script>
 </body>
 </html>
+
