@@ -12,11 +12,28 @@ if (!isset($_SESSION['user_ID'])) {
 // Get the user_ID from the session
 $user_ID = $_SESSION['user_ID'];
 
+// Check if address_ID is provided in the URL
+if (isset($_GET['address_id'])) {
+    $address_ID = $_GET['address_id'];
+
+    // Fetch existing data from the database to populate the form
+    $stmt = $conn->prepare("SELECT address_ID, name, phone, Address_information AS address, tumbon AS sub_district, amphoe AS district, province, Zipcode AS postcode FROM address WHERE user_ID=? AND address_ID=?");
+    $stmt->bind_param("ii", $user_ID, $address_ID);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $stmt->close();
+} else {
+    // If address_ID is not provided, handle the error or redirect
+    echo "Address ID not provided.";
+    exit();
+}
+
 // Check if form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['address_ID'])) {
     // Prepare and bind the SQL statement to update existing data
-    $stmt = $conn->prepare("UPDATE address SET name=?, phone=?, Address_information=?, tumbon=?, amphoe=?, province=?, Zipcode=? WHERE user_ID=?");
-    $stmt->bind_param("sssssssi", $name, $phone, $address, $sub_district, $district, $province, $postcode, $user_ID);
+    $stmt = $conn->prepare("UPDATE address SET name=?, phone=?, Address_information=?, tumbon=?, amphoe=?, province=?, Zipcode=? WHERE user_ID=? AND address_ID=?");
+    $stmt->bind_param("ssssssiii", $name, $phone, $address, $sub_district, $district, $province, $postcode, $user_ID, $address_ID);
 
     // Set parameters and execute
     $name = $_POST['name'];
@@ -39,14 +56,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Close connection
     $conn->close();
 }
-
-// Fetch existing data from the database to populate the form
-$stmt = $conn->prepare("SELECT name, phone, Address_information AS address, tumbon AS sub_district, amphoe AS district, province, Zipcode AS postcode FROM address WHERE user_ID=?");
-$stmt->bind_param("i", $user_ID);
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
-$stmt->close();
 ?>
 
 <!DOCTYPE html>
@@ -111,112 +120,115 @@ $stmt->close();
     <div class="container container1">
         <h2>Thailand Address Form</h2>
         <!-- Populate form fields with existing data -->
-        <div class="form-control">
-            <span>ตำบล/แขวง</span>
-            <input id="sub_district" type="text" class="txt" placeholder="ตำบล" value="<?php echo $row['sub_district']; ?>">
-        </div>
-        <div class="form-control">
-            <span>อำเภอ/เขต</span>
-            <input id="district" type="text" class="txt" placeholder="อำเภอ" value="<?php echo $row['district']; ?>">
-        </div>
-        <div class="form-control">
-            <span>จังหวัด</span>
-            <input id="province" type="text" class="txt" placeholder="จังหวัด" value="<?php echo $row['province']; ?>">
-        </div>
-        <div class="form-control">
-            <span>รหัสไปรษณีย์</span>
-            <input id="postcode" type="text" class="txt" placeholder="รหัสไปรษณีย์" value="<?php echo $row['postcode']; ?>">
-        </div>
-        <div class="form-control">
-            <span>ข้อมูลที่อยู่</span>
-            <input id="address" type="text" class="txt" placeholder="ข้อมูลที่อยู่" value="<?php echo $row['address']; ?>">
-        </div>
-        <div class="form-control">
-            <span>ชื่อ</span>
-            <input id="name" type="text" class="txt" placeholder="ชื่อ" value="<?php echo $row['name']; ?>">
-        </div>
-        <div class="form-control">
-            <span>เบอร์โทรศัพท์</span>
-            <input id="phone" type="text" class="txt" placeholder="เบอร์โทรศัพท์" value="<?php echo $row['phone']; ?>">
-        </div>
-        <button id="applyBtn" class="btn1">Apply Data</button>
+        <form method="POST" action="">
+            <input type="hidden" name="address_ID" value="<?php echo $row['address_ID']; ?>">
+            <div class="form-control">
+                <span>ตำบล/แขวง</span>
+                <input id="sub_district" type="text" class="txt" placeholder="ตำบล" value="<?php echo $row['sub_district']; ?>">
+            </div>
+            <div class="form-control">
+                <span>อำเภอ/เขต</span>
+                <input id="district" type="text" class="txt" placeholder="อำเภอ" value="<?php echo $row['district']; ?>">
+            </div>
+            <div class="form-control">
+                <span>จังหวัด</span>
+                <input id="province" type="text" class="txt" placeholder="จังหวัด" value="<?php echo $row['province']; ?>">
+            </div>
+            <div class="form-control">
+                <span>รหัสไปรษณีย์</span>
+                <input id="postcode" type="text" class="txt" placeholder="รหัสไปรษณีย์" value="<?php echo $row['postcode']; ?>">
+            </div>
+            <div class="form-control">
+                <span>ข้อมูลที่อยู่</span>
+                <input id="address" type="text" class="txt" placeholder="ข้อมูลที่อยู่" value="<?php echo $row['address']; ?>">
+            </div>
+            <div class="form-control">
+                <span>ชื่อ</span>
+                <input id="name" type="text" class="txt" placeholder="ชื่อ" value="<?php echo $row['name']; ?>">
+            </div>
+            <div class="form-control">
+                <span>เบอร์โทรศัพท์</span>
+                <input id="phone" type="text" class="txt" placeholder="เบอร์โทรศัพท์" value="<?php echo $row['phone']; ?>">
+            </div>
+            <button id="applyBtn" class="btn1">Apply Data</button>
+        </form>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/JQL.min.js"></script>
-    <script src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/typeahead.bundle.js"></script>
-    <script src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.js"></script>
+<script src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/JQL.min.js"></script>
+<script src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/typeahead.bundle.js"></script>
+<script src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $.Thailand({
+            $district: $("#sub_district"),
+            $amphoe: $("#district"),
+            $province: $("#province"),
+            $zipcode: $("#postcode")
+        });
 
-    <script>
-        $(document).ready(function() {
-            $.Thailand({
-                $district: $("#sub_district"),
-                $amphoe: $("#district"),
-                $province: $("#province"),
-                $zipcode: $("#postcode")
+        // Function to restrict input to numbers and limit to 10 digits
+        function restrictInputToNumbers(inputField) {
+            inputField.on('input', function() {
+                // Remove any non-numeric characters
+                var sanitized = $(this).val().replace(/\D/g, '');
+                // Limit to 10 digits
+                var maxLength = 10;
+                if (sanitized.length > maxLength) {
+                    sanitized = sanitized.substr(0, maxLength);
+                }
+                // Update the input field value
+                $(this).val(sanitized);
             });
-            // Function to restrict input to numbers and limit to 10 digits
-            function restrictInputToNumbers(inputField) {
-                inputField.on('input', function() {
-                    // Remove any non-numeric characters
-                    var sanitized = $(this).val().replace(/\D/g, '');
-                    // Limit to 10 digits
-                    var maxLength = 10;
-                    if (sanitized.length > maxLength) {
-                        sanitized = sanitized.substr(0, maxLength);
-                    }
-                    // Update the input field value
-                    $(this).val(sanitized);
-                });
+        }
+
+        // Apply the number restriction to phone and postcode fields
+        restrictInputToNumbers($("#phone"));
+        restrictInputToNumbers($("#postcode"));
+
+        $("#applyBtn").click(function(event) {
+            event.preventDefault();
+            // Check if all fields are filled
+            var subDistrict = $("#sub_district").val();
+            var district = $("#district").val();
+            var province = $("#province").val();
+            var postcode = $("#postcode").val();
+            var address = $("#address").val();
+            var name = $("#name").val();
+            var phone = $("#phone").val();
+            var addressID = <?php echo $row['address_ID']; ?>; // Get the address ID
+
+            if (subDistrict.trim() === '' || district.trim() === '' || province.trim() === '' || postcode.trim() === '' || address.trim() === '' || name.trim() === '' || phone.trim() === '') {
+                alert("Please fill in all fields.");
+                return;
             }
 
-            // Apply the number restriction to phone and postcode fields
-            restrictInputToNumbers($("#phone"));
-            restrictInputToNumbers($("#postcode"));
-
-            $("#applyBtn").click(function() {
-                // Check if all fields are filled
-                var subDistrict = $("#sub_district").val();
-                var district = $("#district").val();
-                var province = $("#province").val();
-                var postcode = $("#postcode").val();
-                var address = $("#address").val();
-                var name = $("#name").val();
-                var phone = $("#phone").val();
-
-                if (subDistrict.trim() === '' || district.trim() === '' || province.trim() === '' || postcode.trim() === '' || address.trim() === '' || name.trim() === '' || phone.trim() === '') {
-                    alert("Please fill in all fields.");
-                    return;
+            $.ajax({
+                type: "POST",
+                url: window.location.href,
+                data: {
+                    address_ID: addressID, // Include address ID in the data to be sent
+                    sub_district: subDistrict,
+                    district: district,
+                    province: province,
+                    postcode: postcode,
+                    address: address,
+                    name: name,
+                    phone: phone
+                },
+                success: function(response) {
+                    console.log("Data submitted successfully:", response);
+                    alert("Data submitted successfully");
+                    // Redirect to index.php after OK is clicked
+                    window.location.href = "user_address.php";
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error submitting data:", error);
+                    alert("Error submitting data: " + error);
                 }
-
-                $.ajax({
-                    type: "POST",
-                    url: window.location.href,
-                    data: {
-                        user_ID: <?php echo $user_ID; ?>,
-                        sub_district: subDistrict,
-                        district: district,
-                        province: province,
-                        postcode: postcode,
-                        address: address,
-                        name: name,
-                        phone: phone
-                    },
-                    success: function(response) {
-                        console.log("Data submitted successfully:", response);
-                        alert("Data submitted successfully");
-                        // Redirect to index.php after OK is clicked
-                        window.location.href = "user_address.php";
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error submitting data:", error);
-                        alert("Error submitting data: " + error);
-                    }
-                });
             });
         });
-    </script>
-
+    });
+</script>
 </body>
-
 </html>

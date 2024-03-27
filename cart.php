@@ -24,18 +24,18 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $_SESSION['user_ID']);
 $stmt->execute();
 $result = $stmt->get_result();
-
 $stmt->close();
-// ตรวจสอบว่ามีการส่งข้อมูลมาจากฟอร์มหรือไม่
+
+// Check if data is sent from the form
 if(isset($_POST['quantity']) && isset($_POST['item_index'])) {
-    // รับค่าจำนวนสินค้าและอินเด็กซ์ของสินค้า
+    // Receive the quantity and item index
     $quantity = $_POST['quantity'];
     $item_index = $_POST['item_index'];
 
-    // อัปเดตจำนวนสินค้าในรถเข็น
+    // Update the quantity in the cart
     $_SESSION['cart'][$item_index]['quantity'] = $quantity;
 
-    // Redirect เพื่อป้องกันการส่งข้อมูลซ้ำหรือการรีเฟรชหน้าเว็บ
+    // Redirect to prevent form resubmission
     header("Location: cart.php");
     exit();
 }
@@ -54,6 +54,17 @@ if(isset($_POST['address'])) {
     $stmt->bind_param("iiidd", $user_ID, $address_ID, $orderstatus_ID, $shipping_status, $net_price);
     $stmt->execute();
     $stmt->close();
+
+    // Update product stock
+    foreach($cartItems as $item) {
+        $productId = $item['productId'];
+        $quantity = $item['quantity'];
+        $sql = "UPDATE products_phone SET product_stock = product_stock - ? WHERE product_ID = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $quantity, $productId);
+        $stmt->execute();
+        $stmt->close();
+    }
 
     // Clear cart session
     unset($_SESSION['cart']);
@@ -113,9 +124,23 @@ if(isset($_POST['address'])) {
                                                 Quantity: 
                                                 <form id="updateForm<?php echo $key; ?>" action="cart.php" method="post">
                                                     <input type="hidden" name="item_index" value="<?php echo $key; ?>">
-                                                    <input type="number" id="inputQuantity_<?php echo $key; ?>" class="input-quantity" name="quantity" value="<?php echo $item['quantity']; ?>" min="1" step="1">
-                                                </form>
+                                                    <?php
+                                                        // Retrieve actual product stock from database
+                                                        $productId = $item['productId'];
+                                                        $sql = "SELECT product_stock FROM products_phone WHERE product_ID = ?";
+                                                        $stmt = $conn->prepare($sql);
+                                                        $stmt->bind_param("i", $productId);
+                                                        $stmt->execute();
+                                                        $stmt->bind_result($productStock);
+                                                        $stmt->fetch();
+                                                        $stmt->close();
 
+                                                        // Set maximum value for input based on actual product stock
+                                                        $maxQuantity = $productStock > 0 ? $productStock : 1;
+                                                    ?>
+                                                    <input type="number" id="inputQuantity_<?php echo $key; ?>" class="input-quantity" name="quantity" value="<?php echo min($item['quantity'], $maxQuantity); ?>" min="1" max="<?php echo $maxQuantity; ?>" step="1">
+                                                    <span class="text-muted">(Stock: <?php echo $productStock; ?>)</span>
+                                                </form>
                                             </p>
                                             <p class="card-text">Total price : $<?php echo number_format($item['totalPrice'], 2); ?></p>
                                         </td>
@@ -125,33 +150,33 @@ if(isset($_POST['address'])) {
                                                 <button type="submit" class="btn btn-danger delete-button"><i class="bi bi-trash"></i></button>
                                             </form>
                                         </td>
-                                    </tr>
+                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-            <?php endforeach; ?>
+             <?php endforeach; ?>
         </div>
-        <div class="mt-4">
-            <p><strong>Net Total:</strong> $<?php echo number_format($totalPrice, 2); ?></p>
-        </div>
-        
-        <!-- Address selection -->
-        <div class="mt-4">
-            <form id="checkoutForm" action="cartCheckout.php" method="POST">
-                <label for="address">Select Address:</label>
-                <select name="address" id="address" class="form-select mb-3">
-                    <option value="" selected disabled>-- Select Address --</option>
-                    <?php while ($row = $result->fetch_assoc()) : ?>
-                        <option value="<?php echo htmlspecialchars($row['address_ID']); ?>"><?php echo htmlspecialchars($row['name'] . ' - ' . $row['Address_information'] . ', ' . $row['tumbon'] . ', ' . $row['amphoe'] . ', ' . $row['province'] . ', ' . $row['Zipcode']); ?></option>
-                    <?php endwhile; ?>
-                </select>
-                <button type="button" class="btn btn-primary" id="checkoutBtn" disabled onclick="confirmCheckout()">Proceed to Checkout</button>
-            </form>
-        </div>
+    <div class="mt-4">
+        <p><strong>Net Total:</strong> $<?php echo number_format($totalPrice, 2); ?></p>
+    </div>
+    
+    <!-- Address selection -->
+    <div class="mt-4">
+        <form id="checkoutForm" action="cartCheckout.php" method="POST">
+            <label for="address">Select Address:</label>
+            <select name="address" id="address" class="form-select mb-3">
+                <option value="" selected disabled>-- Select Address --</option>
+                <?php while ($row = $result->fetch_assoc()) : ?>
+                    <option value="<?php echo htmlspecialchars($row['address_ID']); ?>"><?php echo htmlspecialchars($row['name'] . ' - ' . $row['Address_information'] . ', ' . $row['tumbon'] . ', ' . $row['amphoe'] . ', ' . $row['province'] . ', ' . $row['Zipcode']); ?></option>
+                <?php endwhile; ?>
+            </select>
+            <button type="button" class="btn btn-primary" id="checkoutBtn" disabled onclick="confirmCheckout()">Proceed to Checkout</button>
+        </form>
+    </div>
 
-    <?php endif; ?>
+<?php endif; ?>
 
 </div>
 

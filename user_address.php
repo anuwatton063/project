@@ -6,7 +6,7 @@ include 'navbar-user.php';
 if (!isset($_SESSION['user_ID'])) {
     // Redirect to login page or perform any other action if the user is not logged in
     header("Location: login.php");
-    exit();
+    exit(); // Stop script execution
 }
 
 // Get user ID from session
@@ -22,7 +22,7 @@ if (isset($_POST['confirm_delete'])) {
     if ($delete_stmt->execute()) {
         // Redirect back to this page after deletion
         header("Location: ".$_SERVER['PHP_SELF']);
-        exit();
+        exit(); // Stop script execution
     } else {
         // Handle deletion error
         echo "Error deleting address.";
