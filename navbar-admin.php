@@ -17,7 +17,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
             <div class="container">
-                <a class="navbar-brand" href="admin.php">Admin</a>
+                <a class="navbar-brand" href="admin-user.php">Admin</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -32,15 +32,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="admin_order.php">รายการคำสั่งซื้อ</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">All Products</a></li>
-                                <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#">Popular Items</a></li>
-                                <li><a class="dropdown-item" href="#">New Arrivals</a></li>
-                            </ul>
-                        </li>
+                        
                     </ul>
                 </div>
             </div>

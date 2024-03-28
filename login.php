@@ -103,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             switch ($_SESSION['user_type_ID']) {
                 case 1:
-                    header("Location: admin.php");
+                    header("Location: admin-user.php");
                     exit();
                     break;
                 case 2:

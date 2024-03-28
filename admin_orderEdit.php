@@ -1,6 +1,18 @@
 <?php
 include('condb.php'); // Include your database connection file
+include 'navbar-user.php';
+include 'checkuser.php';
 
+        $user_type_ID = getUserTypeID();
+        if ($user_type_ID == 1) {
+            include 'navbar-admin.php';
+            
+        }
+        if ($user_type_ID != 1){
+            header("Location: index.php"); // Redirect to index.php
+            exit(); // Ensure script execution stops after redirection
+        }
+        
 // Fetch order details based on order ID
 if(isset($_GET['orderID']) && !empty($_GET['orderID'])) {
     $orderID = $_GET['orderID'];

@@ -31,7 +31,7 @@ $stmt->close();
 if(isset($_POST['address'])) {
     $address_ID = $_POST['address'];
     $user_ID = $_SESSION['user_ID'];
-    $orderstatus_ID = 5; // Assume 1 represents the order status as pending
+    $orderstatus_ID = 1; // Assume 1 represents the order status as pending
     $shipping_status_ID = 1; // Assume 1 represents the shipping status as pending
     $net_price = $totalPrice;
 

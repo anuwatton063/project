@@ -31,6 +31,13 @@ if(isset($_GET['orderID'])) {
     $order_stmt->bind_param("i", $orderID);
     $order_stmt->execute();
     $order_result = $order_stmt->get_result();
+
+    // Fetch payment details associated with the order
+    $payment_sql = "SELECT * FROM payment WHERE order_ID = ?";
+    $payment_stmt = $conn->prepare($payment_sql);
+    $payment_stmt->bind_param("i", $orderID);
+    $payment_stmt->execute();
+    $payment_result = $payment_stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -126,6 +133,38 @@ if(isset($_GET['orderID'])) {
                         }
                     } else {
                         echo "<tr><td colspan='5'>No order details found.</td></tr>";
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Display payment details -->
+        <div class="mt-4">
+            <h2>Payment Information</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Net Price</th>
+                        <th>Transfer Slip</th>
+                        <th>Paid Date Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    // Check if there are any payment details
+                    if ($payment_result->num_rows > 0) {
+                        while ($row = $payment_result->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td>" . $row['order_ID'] . "</td>";
+                            echo "<td>$" . $row['net_price'] . "</td>";
+                            echo "<td><a href='../project/slip/" . $row['transfer_slip'] . "' target='_blank'><img src='../project/slip/" . $row['transfer_slip'] . "' alt='Transfer Slip' width='100' height='100'></a></td>";
+                            echo "<td>" . $row['paid_date_time'] . "</td>";
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='4'>You haven't paid yet.</td></tr>";
                     }
                     ?>
                 </tbody>

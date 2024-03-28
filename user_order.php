@@ -10,6 +10,8 @@ if (!isset($_SESSION['user_ID'])) {
     header("Location: login.php");
     exit();
 }
+
+// Check if order cancellation request is made
 ?>
 
 <!DOCTYPE html>
@@ -43,17 +45,21 @@ if (!isset($_SESSION['user_ID'])) {
                         <th>Order Status</th>
                         <th>Shipping Status</th>
                         <th>Total Price</th>
-                        <th>View Details</th>
+                        <th>Date</th>
+                        <th>Details</th>
+                        <th>Payment</th>
+                        <th>Cancel Order</th> <!-- New column for Cancel Order button -->
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                     // Fetch user's orders from the database with joined tables
-                    $sql = "SELECT orders.order_ID, orders_status.order_status, shipping_status.status_name, orders.net_price 
+                    $sql = "SELECT orders.order_ID, orders.orderstatus_ID, orders_status.order_status, shipping_status.status_name, orders.net_price, orders.date_time
                             FROM orders 
                             INNER JOIN orders_status ON orders.orderstatus_ID = orders_status.orderstatus_ID 
                             INNER JOIN shipping_status ON orders.shipping_status_ID = shipping_status.status_ID
-                            WHERE orders.user_ID = ?";
+                            WHERE orders.user_ID = ?
+                            ORDER BY orders.order_ID DESC"; // Added ORDER BY clause
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param("i", $_SESSION['user_ID']);
                     $stmt->execute();
@@ -68,11 +74,39 @@ if (!isset($_SESSION['user_ID'])) {
                             echo "<td>" . $row['order_status'] . "</td>";
                             echo "<td>" . $row['status_name'] . "</td>";
                             echo "<td>$" . $row['net_price'] . "</td>";
+                            echo "<td>" . date('d/m/Y H:i:s', strtotime($row['date_time'])) . "</td>";
                             echo "<td><a href='user_orderDetail.php?orderID=" . $row['order_ID'] . "' class='btn btn-primary'>View Details</a></td>";
+
+                            echo "<td>";
+                            if ($row['orderstatus_ID'] == 1) {
+                                echo "<a href='user_payment.php?orderID=" . $row['order_ID'] . "' class='btn btn-primary'>Details</a>";
+                            } else {
+                                echo "<button class='btn btn-primary' disabled>Details</button>";
+                            }
+                            echo "</td>";
+
+                            // Display Cancel Order button only if order status is 'Pending'
+                            if ($row['orderstatus_ID'] == 1) {
+                                echo "<td>
+                                        <form method='POST' onsubmit='return confirm(\"Are you sure you want to cancel this order?\");'>
+                                            <input type='hidden' name='cancelOrder' value='1'>
+                                            <input type='hidden' name='orderID' value='" . $row['order_ID'] . "'>
+                                            <button type='submit' class='btn btn-danger'>Cancel Order</button>
+                                        </form>
+                                      </td>";
+                            } else {
+                                echo "<td>
+                                <form method='POST' onsubmit='return confirm(\"Are you sure you want to cancel this order?\");'>
+                                    <input type='hidden' name='cancelOrder' value='1'>
+                                    <input type='hidden' name='orderID' value='" . $row['order_ID'] . "'>
+                                    <button type='submit' class='btn btn-danger'disabled>Cancel Order</button>
+                                </form>
+                              </td>";
+                            }
                             echo "</tr>";
                         }
                     } else {
-                        echo "<tr><td colspan='5'>No orders found.</td></tr>";
+                        echo "<tr><td colspan='8'>No orders found.</td></tr>";
                     }
                     ?>
                 </tbody>
@@ -80,5 +114,42 @@ if (!isset($_SESSION['user_ID'])) {
         </div>
     </div>
 </body>
+<?php 
+if(isset($_POST['cancelOrder']) && isset($_POST['orderID'])) {
+    $orderID = $_POST['orderID'];
+    // Start a transaction to ensure data consistency
+    $conn->begin_transaction();
 
+    // Update order status to 5 (Cancelled)
+    $update_sql = "UPDATE orders SET orderstatus_ID = 5 WHERE order_ID = ?";
+    $update_stmt = $conn->prepare($update_sql);
+    $update_stmt->bind_param("i", $orderID);
+    if($update_stmt->execute()) {
+        // Update product quantities in stock
+        $return_stock_sql = "UPDATE products_phone 
+                             INNER JOIN orders_details ON products_phone.product_ID = orders_details.product_ID
+                             SET products_phone.product_stock = products_phone.product_stock + orders_details.quantity
+                             WHERE orders_details.order_ID = ?";
+        $return_stock_stmt = $conn->prepare($return_stock_sql);
+        $return_stock_stmt->bind_param("i", $orderID);
+        if($return_stock_stmt->execute()) {
+            // Commit the transaction if all queries succeed
+            $conn->commit();
+            // Redirect back to the same page
+            echo "<meta http-equiv='refresh' content='0'>";
+            exit();
+        } else {
+            // Rollback the transaction if updating stock fails
+            $conn->rollback();
+            echo json_encode(array('status' => 'error', 'message' => 'Error returning stock.'));
+            exit();
+        }
+    } else {
+        // Rollback the transaction if updating order status fails
+        $conn->rollback();
+        echo json_encode(array('status' => 'error', 'message' => 'Error cancelling order.'));
+        exit();
+    }
+}
+?>
 </html>

@@ -44,7 +44,7 @@ if(isset($_POST['quantity']) && isset($_POST['item_index'])) {
 if(isset($_POST['address'])) {
     $address_ID = $_POST['address'];
     $user_ID = $_SESSION['user_ID'];
-    $orderstatus_ID = 5; // Assuming 1 represents a pending order status
+    $orderstatus_ID = 1; // Assuming 1 represents a pending order status
     $shipping_status = 1; // Assuming 1 represents a pending shipping status
     $net_price = $totalPrice;
 

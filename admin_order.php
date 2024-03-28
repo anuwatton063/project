@@ -3,7 +3,6 @@ ob_start(); // Start output buffering
 
 include 'navbar-user.php';
 include('condb.php');
-
 include 'checkuser.php';
 
 $user_type_ID = getUserTypeID();
@@ -22,7 +21,7 @@ function setSessionMessage($message) {
 
 // Pagination
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-$perPage = 8;
+$perPage = 10;
 $offset = ($page - 1) * $perPage;
 
 ?>
@@ -109,7 +108,7 @@ $offset = ($page - 1) * $perPage;
                 <col width="15%"> <!-- Adjusted width for date_time column -->
                 <thead>
                     <tr>
-                        <th><a href="javascript:void(0);" onclick="toggleSort()">Order ID</a></th>
+                        <th>Order ID</th>
                         <th>User ID</th>
                         <th>Order Status</th>
                         <th>Shipping Status</th>
@@ -164,8 +163,7 @@ $offset = ($page - 1) * $perPage;
                             )";
                         }
 
-                        $sql .= " ORDER BY $orderBy LIMIT $offset, $perPage"; // Adding pagination limit
-
+                        $sql .= " ORDER BY order_ID DESC LIMIT $offset, $perPage"; // Ordering by order_ID in descending order
 
                     $result = $conn->query($sql);
 

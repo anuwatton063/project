@@ -39,7 +39,7 @@
                         // Check if user_type_ID is set and equal to 1
                         if($user_row['user_type_ID'] == 1) {
                             // If user_type_ID is 1, display the "admin" button
-                            echo '<a class="btn btn-outline-dark me-2" href="admin.php">admin</a>';
+                            echo '<a class="btn btn-outline-dark me-2" href="admin-user.php">admin</a>';
                         }
                         
                         // Display dropdown menu for Edit Profile and Edit Address
@@ -49,9 +49,9 @@
                                     Edit
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li><a class="dropdown-item" href="user_profile.php">Edit Profile</a></li>
-                                    <li><a class="dropdown-item" href="user_address.php">Edit Address</a></li>
-                                    <li><a class="dropdown-item" href="user_order.php">order</a></li>
+                                    <li><a class="dropdown-item" href="user_profile.php">Profile</a></li>
+                                    <li><a class="dropdown-item" href="user_address.php">Address</a></li>
+                                    <li><a class="dropdown-item" href="user_order.php">Order</a></li>
                                 </ul>
                             </div>
                         ';

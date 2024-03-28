@@ -2,11 +2,17 @@
 include 'navbar-user.php';
 include('condb.php');
 
-// Check if user_id is provided in the URL
-if (!isset($_GET['user_id'])) {
-    header("Location: index.php"); // Redirect to index.php if user_id is not provided
-    exit();
-}
+include 'checkuser.php';
+
+        $user_type_ID = getUserTypeID();
+        if ($user_type_ID == 1) {
+            include 'navbar-admin.php';
+            
+        }
+        if ($user_type_ID != 1){
+            header("Location: index.php"); // Redirect to index.php
+            exit(); // Ensure script execution stops after redirection
+        }
 
 // Get the user ID from the URL
 $user_id = $_GET['user_id'];
