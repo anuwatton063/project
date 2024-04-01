@@ -196,20 +196,21 @@ $offset = ($page - 1) * $productsPerPage;
                         }
                         // Output the product
                         echo '<div class="col mb-5">
-                                <div class="card">
-                                    <img class="card-img-top" src="' . $cover_image_path . '" alt="Product Image" />
-                                    <div class="card-body p-4">
-                                        <div class="text-center">
-                                            <h5 class="fw-bolder">' . $row['product_name'] . '</h5>
-                                            ' . '฿' . $row['product_price'] . '
-                                        </div>
-                                    </div>
-                                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="detail.php?id=' . $row['product_ID'] . '">View</a></div>
-                                        <div class="text-center"><button class="btn btn-outline-dark mt-auto" onclick="addToCartBackend(' . $row['product_ID'] . ', \'' . $row['product_name'] . '\', ' . $row['product_price'] . ', \'' . $row['product_cover_image'] . '\')">Add</button></div>
-                                    </div>
+                        <div class="card">
+                            <img class="card-img-top" src="' . $cover_image_path . '" alt="Product Image" />
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <h5 class="fw-bolder">' . $row['product_name'] . '</h5>
+                                    ฿ ' . number_format($row['product_price'],2) . '
                                 </div>
-                            </div>';
+                            </div>
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="detail.php?id=' . $row['product_ID'] . '">View</a></div>
+                                <div class="text-center"><button class="btn btn-outline-dark mt-auto" onclick="addToCartBackend(' . $row['product_ID'] . ', \'' . $row['product_name'] . '\', ' . $row['product_price'] . ', \'' . $row['product_cover_image'] . '\')">Add</button></div>
+                            </div>
+                        </div>
+                    </div>';
+
                     }
                 }
                 // Close the last section

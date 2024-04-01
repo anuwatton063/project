@@ -101,14 +101,13 @@ if ($result && mysqli_num_rows($result) > 0) {
                 echo '<h2>' . $current_type . '</h2><div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">';
             }
             // Output the product
-            echo '<div class="col mb-5">
+                        echo '<div class="col mb-5">
                     <div class="card">
                         <img class="card-img-top" src="' . $cover_image_path . '" alt="Product Image" />
                         <div class="card-body p-4">
                             <div class="text-center">
                                 <h5 class="fw-bolder">' . $row['product_name'] . '</h5>
-                                
-                                ' . '฿' . $row['product_price'] . '
+                                ฿ ' . number_format($row['product_price'],2) . '
                             </div>
                         </div>
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
@@ -117,6 +116,7 @@ if ($result && mysqli_num_rows($result) > 0) {
                         </div>
                     </div>
                 </div>';
+
         }
     }
     // Close the last section

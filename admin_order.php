@@ -72,7 +72,7 @@ $offset = ($page - 1) * $perPage;
     </form>
 
     <div class="container">
-        <h1 class="mt-5">All Orders</h1>
+        <h1 class="mt-5">การสั่งซื้อ</h1>
 
         <div class="row mb-3">
             <!-- Search form -->

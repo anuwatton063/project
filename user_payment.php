@@ -187,31 +187,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["transfer_slip"])) {
 
 <body>
     <div class="qr-code-container">
-        <h2>Payment QR Code</h2>
+        <h2>การชำระเงิน</h2>
         <img src="../project/qrcode/qrcode1.PNG" alt="Payment QR Code" class="qr-code-img" />
     </div>
     <div class="container">
-        <h1 class="text-center mt-5">Payment</h1>
         <div class="row mt-4">
             <div class="col-md-6">
-                <h2>Order Details</h2>
+                <h2>รายระเอียด</h2>
                 <table class="table">
                     <tr>
                         
                         <td>Order ID : <?php echo $_GET['orderID']; ?></td>
                     </tr>
                     <tr>
-                        <td>Total Price : ฿ <?php echo $total_price; ?></td>
+                        <td>ราคารวม : ฿ <?php echo number_format($total_price, 2); ?></td>
                     </tr>
                 </table>
             </div>
         </div>
         <div class="row mt-4">
             <div class="col-md-6">
-                <h2><?php echo $button_text; ?> Transfer Slip</h2>
+                <h2><?php echo $button_text; ?> หลักฐานการชำระเงิน</h2>
                 <form method="post" enctype="multipart/form-data">
                     <div class="file-input">
-                        <label for="transfer_slip" class="form-label">Upload Transfer Slip:</label>
+                        <label for="transfer_slip" class="form-label">อัปโหลดสลิป:</label>
                         <input type="file" id="transfer_slip" name="transfer_slip" class="form-control" onchange="previewImage(this, 'transferSlipPreview')">
                     </div>
                     <img id="transferSlipPreview" src="../project/slip/" alt="Transfer Slip Preview">

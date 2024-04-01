@@ -105,13 +105,13 @@ if(isset($_GET['id'])) {
                 <div class="col-md-6">
                     <h1 class="display-5 fw-bolder"><?php echo $row['product_name']; ?></h1>
                     <div class="fs-5 mb-3">
-                        <span><?php echo '฿'. $row['product_price']; ?></span>
+                        <br><span>฿ <?php echo number_format($row['product_price'], 2); ?></span>
                         <?php if (!empty($row['product_color'])): ?>
-                            <span class="ms-3">Color: <?php echo$row['product_color']; ?></span>
-                            <span class="ms-3">capacity: <?php echo$row['Phone_capacity']; ?></span>
+                            <span class="ms-3">สี: <?php echo$row['product_color']; ?></span>
+                            <span class="ms-3">ความจุ: <?php echo$row['Phone_capacity']; ?></span>
                         <?php endif; ?>
                     </div>
-                    <p class="lead">In Stock: <?php echo $row['product_stock']; ?></p>
+                    <p class="lead">จำนวนสินค้าที่มี: <?php echo $row['product_stock']; ?></p>
                     <div class="d-flex">
                         <input class="form-control text-center me-3" id="inputQuantity_<?php echo $row['product_ID']; ?>" type="number" value="1" style="max-width: 3rem" />
                         <button class="btn btn-outline-dark flex-shrink-0" type="button" onclick="addToCartBackend(<?php echo $row['product_ID']; ?>, '<?php echo $row['product_name']; ?>', <?php echo $row['product_price']; ?>, '<?php echo $row['product_cover_image']; ?>')">

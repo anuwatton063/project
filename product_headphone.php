@@ -199,8 +199,8 @@ $offset = ($page - 1) * $productsPerPage;
                                     <img class="card-img-top" src="' . $cover_image_path . '" alt="Product Image" />
                                     <div class="card-body p-4">
                                         <div class="text-center">
-                                            <h5 class="fw-bolder">' . $row['product_name'] . '</h5>
-                                            ' . '฿' . $row['product_price'] . '
+                                        <h5 class="fw-bolder">' . $row['product_name'] . '</h5>
+                                        ฿ ' . number_format($row['product_price'],2) . '
                                         </div>
                                     </div>
                                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">

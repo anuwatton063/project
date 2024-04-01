@@ -78,15 +78,15 @@ if(isset($_POST['updateStatus'])) {
 
 <body>
     <div class="container">
-        <h1 class="mt-5">Update Order Status and Shipping Status</h1>
+        <h1 class="mt-5">สถานะการสั่งซื้อ</h1>
         <div class="mt-4">
             <form method="post">
                 <div class="mb-3">
-                    <label for="currentOrderStatus" class="form-label">Current Order Status:</label>
+                    <label for="currentOrderStatus" class="form-label">สถานะ:</label>
                     <input type="text" class="form-control" id="currentOrderStatus" value="<?php echo $order_status; ?>" readonly>
                 </div>
                 <div class="mb-3">
-                    <label for="newOrderStatus" class="form-label">New Order Status:</label>
+                    <label for="newOrderStatus" class="form-label">สถานนะหลังเปลี่ยนแปลง:</label>
                     <select class="form-select" id="newOrderStatus" name="newOrderStatus" required>
                         <option value="" selected disabled>Select New Order Status</option>
                         <!-- Fetch and display available order statuses from the database -->
@@ -102,11 +102,11 @@ if(isset($_POST['updateStatus'])) {
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="currentShippingStatus" class="form-label">Current Shipping Status:</label>
+                    <label for="currentShippingStatus" class="form-label">การจัดส่ง:</label>
                     <input type="text" class="form-control" id="currentShippingStatus" value="<?php echo $shipping_status; ?>" readonly>
                 </div>
                 <div class="mb-3">
-                    <label for="newShippingStatus" class="form-label">New Shipping Status:</label>
+                    <label for="newShippingStatus" class="form-label">สถานนะหลังเปลี่ยนแปลง:</label>
                     <select class="form-select" id="newShippingStatus" name="newShippingStatus" required>
                         <option value="" selected disabled>Select New Shipping Status</option>
                         <!-- Fetch and display available shipping statuses from the database -->

@@ -105,7 +105,7 @@ $user_types = mysqli_fetch_all($user_type_query, MYSQLI_ASSOC);
 </head>
 <body>
     <div class="container mt-4">
-        <h2>Edit User</h2>
+        <h2>ข้อมูลลูกค้า</h2><br>
 
         <!-- Display error message if exists -->
         <?php if (isset($_SESSION['error_message'])): ?>
@@ -122,11 +122,11 @@ $user_types = mysqli_fetch_all($user_type_query, MYSQLI_ASSOC);
                 <input type="text" class="form-control" id="username" name="username" value="<?= $user_data['username']; ?>" readonly style="background-color: #f8f9fa; cursor: not-allowed;">
             </div>
             <div class="form-group">
-                <label for="fname">First Name</label>
+                <label for="fname">ชื่อจริง</label>
                 <input type="text" class="form-control" id="fname" name="fname" value="<?= $user_data['fname']; ?>" readonly style="background-color: #f8f9fa; cursor: not-allowed;">
             </div>
             <div class="form-group">
-                <label for="lname">Last Name</label>
+                <label for="lname">นามสกุล</label>
                 <input type="text" class="form-control" id="lname" name="lname" value="<?= $user_data['lname']; ?>" readonly style="background-color: #f8f9fa; cursor: not-allowed;">
             </div>
             <div class="form-group">
@@ -134,7 +134,7 @@ $user_types = mysqli_fetch_all($user_type_query, MYSQLI_ASSOC);
                 <input type="email" class="form-control" id="email" name="email" value="<?= $user_data['email']; ?>"readonly style="background-color: #f8f9fa; cursor: not-allowed;">
             </div>
             <div class="form-group">
-                <label for="user_type_ID">User Type</label>
+                <label for="user_type_ID">ปรเภทผู้ใช้</label>
                 <select class="form-control" id="user_type_ID" name="user_type_ID">
                     <?php foreach ($user_types as $type) : ?>
                         <option value="<?= $type['user_type_ID']; ?>" <?= $type['user_type_ID'] == $user_data['user_type_ID'] ? 'selected' : ''; ?>><?= $type['user_type_name']; ?></option>

@@ -139,10 +139,10 @@ if(isset($_POST['address'])) {
                                                         $maxQuantity = $productStock > 0 ? $productStock : 1;
                                                     ?>
                                                     <input type="number" id="inputQuantity_<?php echo $key; ?>" class="input-quantity" name="quantity" value="<?php echo min($item['quantity'], $maxQuantity); ?>" min="1" max="<?php echo $maxQuantity; ?>" step="1">
-                                                    <span class="text-muted">(Stock: <?php echo $productStock; ?>)</span>
+                                                    <br><span class="text-muted">(Stock: <?php echo number_format($productStock); ?>)</span>
                                                 </form>
                                             </p>
-                                            <p class="card-text">Total price : $<?php echo number_format($item['totalPrice'], 2); ?></p>
+                                            <p class="card-text">Total price : ฿ <?php echo number_format($item['totalPrice'], 2); ?></p>
                                         </td>
                                         <td style="width: 25%; vertical-align: middle;">
                                             <form action="cart_remove.php" method="post">
@@ -159,7 +159,7 @@ if(isset($_POST['address'])) {
              <?php endforeach; ?>
         </div>
     <div class="mt-4">
-        <p><strong>Net Total:</strong> $<?php echo number_format($totalPrice, 2); ?></p>
+        <p><strong>Net Total:</strong> ฿ <?php echo number_format($totalPrice, 2); ?></p>
     </div>
     
     <!-- Address selection -->

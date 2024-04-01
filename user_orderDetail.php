@@ -62,7 +62,7 @@ if(isset($_GET['orderID'])) {
 
 <body>
     <div class="container">
-        <h1 class="mt-5">รายระเอีดข้อมูล</h1>
+        <h1 class="mt-5">รายระเอียดข้อมูล</h1>
         
         <!-- Display address information -->
         <div class="mt-4">
@@ -127,8 +127,9 @@ if(isset($_GET['orderID'])) {
                             echo "<td><img src='../project/png/" . $row['product_cover_image'] . "' alt='" . $row['product_name']. "' width='100' height='100'> "."</td>";
                             echo "<td>" . $row['product_name'] . "</td>";
                             echo "<td>" . $row['quantity'] . "</td>";
-                            echo "<td>$" . $row['product_price'] . "</td>";
-                            echo "<td>$" . $row['total_price'] . "</td>";
+                            echo "<td>฿ " . number_format($row['product_price'],2) . "</td>";
+                            echo "<td>฿ " . number_format($row['total_price'],2) . "</td>";
+
                             echo "</tr>";
                         }
                     } else {
@@ -158,13 +159,13 @@ if(isset($_GET['orderID'])) {
                         while ($row = $payment_result->fetch_assoc()) {
                             echo "<tr>";
                             echo "<td>" . $row['order_ID'] . "</td>";
-                            echo "<td>$" . $row['net_price'] . "</td>";
+                            echo "<td>฿ " . number_format($row['net_price'],2) . "</td>";
                             echo "<td><a href='../project/slip/" . $row['transfer_slip'] . "' target='_blank'><img src='../project/slip/" . $row['transfer_slip'] . "' alt='Transfer Slip' width='100' height='100'></a></td>";
                             echo "<td>" . $row['paid_date_time'] . "</td>";
                             echo "</tr>";
                         }
                     } else {
-                        echo "<tr><td colspan='4'>You haven't paid yet.</td></tr>";
+                        echo "<tr><td colspan='4'>ยังไม่ทำการจ่ายเงิน</td></tr>";
                     }
                     ?>
                 </tbody>
