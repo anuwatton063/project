@@ -112,9 +112,9 @@ $query_sql = mysqli_query($conn, $sql);
                             <th>ชื่อจริง</th>
                             <th>นามสกุล</th>
                             <th>Email</th>
-                            <th>ประเถทผู้ใช้</th> <!-- New column for user type -->
+                            <th>ประเภทผู้ใช้</th> <!-- New column for user type -->
                             <th>Actions</th> <!-- New column for actions -->
-                            <th>Add Address</th> <!-- New column for adding address -->
+                            <th>ที่อยู่</th> <!-- New column for adding address -->
                         </tr>
                     </thead>
                     <tbody>

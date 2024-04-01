@@ -120,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo '<script>showAlert("รหัสผ่านไม่ถูกต้อง")</script>';
         }
     } else {
-        echo '<script>showAlert("ไม่พบชื่อผู้ใช้งานหรืออีเมล์")</script>';
+        echo '<script>showAlert("กรอกชื่อผู้ใช้งานหรืออีเมล์ให้ถูกต้อง")</script>';
     }
     
 }

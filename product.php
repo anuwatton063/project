@@ -210,18 +210,18 @@ if ($total_pages > 1) {
         <table class="table">
             <thead>
                 <tr>
-                    <th><a href="?sort=product_ID<?= $sort == 'product_ID' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_ID' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product ID</a></th>
-                    <th><a href="?sort=type_name<?= $sort == 'type_name' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'type_name' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product Type</a></th>
-                    <th><a href="?sort=brand_name<?= $sort == 'brand_name' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'brand_name' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product Brand</a></th>
-                    <th><a href="?sort=product_color<?= $sort == 'product_color' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_color' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product Color</a></th>
-                    <th><a href="?sort=Phone_capacity<?= $sort == 'Phone_capacity' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'Phone_capacity' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Phone Capacity</a></th>
-                    <th><a href="?sort=product_stock<?= $sort == 'product_stock' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_stock' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product Stock</a></th>
-                    <th><a href="?sort=product_name<?= $sort == 'product_name' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_name' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product Name</a></th>
-                    <th><a href="?sort=product_detail<?= $sort == 'product_detail' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_detail' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product Detail</a></th>
-                    <th>Product Cover Image</th>
-                    <th><a href="?sort=product_price<?= $sort == 'product_price' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_price' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">Product Price</a></th>
-                    <th>Product Image 1</th>
-                    <th>Product Image 2</th>
+                    <th><a href="?sort=product_ID<?= $sort == 'product_ID' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_ID' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">ID</a></th>
+                    <th><a href="?sort=type_name<?= $sort == 'type_name' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'type_name' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">ประเภทสินค้า</a></th>
+                    <th><a href="?sort=brand_name<?= $sort == 'brand_name' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'brand_name' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">ยี่ห้อสินค้า</a></th>
+                    <th><a href="?sort=product_color<?= $sort == 'product_color' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_color' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">สี</a></th>
+                    <th><a href="?sort=Phone_capacity<?= $sort == 'Phone_capacity' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'Phone_capacity' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">ความจุ</a></th>
+                    <th><a href="?sort=product_stock<?= $sort == 'product_stock' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_stock' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">จำนวนสินค้า</a></th>
+                    <th><a href="?sort=product_name<?= $sort == 'product_name' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_name' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">ชื่อ</a></th>
+                    <th><a href="?sort=product_detail<?= $sort == 'product_detail' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_detail' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">รายระเอียด</a></th>
+                    <th>ภาพสินค้า</th>
+                    <th><a href="?sort=product_price<?= $sort == 'product_price' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_price' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">ราคา</a></th>
+                    <th>ภาพสินค้า 1</th>
+                    <th>ภาพสินค้า 2</th>
                     <th>Action</th> <!-- New column for editing actions -->
                 </tr>
             </thead>

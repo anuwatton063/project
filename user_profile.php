@@ -104,8 +104,8 @@ if (!$user_data) {
                     <div class="col-md-6">
                         <ul class="list-group">
                             <li class="list-group-item"><strong>Username:</strong> <?= htmlspecialchars($user_data['username']); ?></li>
-                            <li class="list-group-item"><strong>First Name:</strong> <?= htmlspecialchars($user_data['fname']); ?></li>
-                            <li class="list-group-item"><strong>Last Name:</strong> <?= htmlspecialchars($user_data['lname']); ?></li>
+                            <li class="list-group-item"><strong>ชื่อจริง:</strong> <?= htmlspecialchars($user_data['fname']); ?></li>
+                            <li class="list-group-item"><strong>นามสกุล:</strong> <?= htmlspecialchars($user_data['lname']); ?></li>
                             <li class="list-group-item"><strong>Email:</strong> <?= htmlspecialchars($user_data['email']); ?></li>
                         </ul>
                     </div>

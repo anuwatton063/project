@@ -36,19 +36,19 @@ if (!isset($_SESSION['user_ID'])) {
 
 <body>
     <div class="container">
-        <h1 class="mt-5">Your Orders</h1>
+        <h1 class="mt-5">ข้อมูลการสั่งซื้อ</h1>
         <div class="table-responsive mt-4">
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>Order ID</th>
-                        <th>Order Status</th>
-                        <th>Shipping Status</th>
-                        <th>Total Price</th>
-                        <th>Date</th>
-                        <th>Details</th>
-                        <th>Payment</th>
-                        <th>Cancel Order</th> <!-- New column for Cancel Order button -->
+                        <th>สถานะสินค้า</th>
+                        <th>การจัดส่ง</th>
+                        <th>ราคา</th>
+                        <th>วันที่สั่งซื้อ</th>
+                        <th>รายระเอียด</th>
+                        <th>ชำระเงิน</th>
+                        <th>ยกเลิกคำสั่งซื้อ</th> <!-- New column for Cancel Order button -->
                     </tr>
                 </thead>
                 <tbody>
@@ -73,15 +73,15 @@ if (!isset($_SESSION['user_ID'])) {
                             echo "<td>" . $row['order_ID'] . "</td>";
                             echo "<td>" . $row['order_status'] . "</td>";
                             echo "<td>" . $row['status_name'] . "</td>";
-                            echo "<td>$" . $row['net_price'] . "</td>";
+                            echo "<td>฿ " . $row['net_price'] . "</td>";
                             echo "<td>" . date('d/m/Y H:i:s', strtotime($row['date_time'])) . "</td>";
-                            echo "<td><a href='user_orderDetail.php?orderID=" . $row['order_ID'] . "' class='btn btn-primary'>View Details</a></td>";
+                            echo "<td><a href='user_orderDetail.php?orderID=" . $row['order_ID'] . "' class='btn btn-primary'>รายระเอียด</a></td>";
 
                             echo "<td>";
                             if ($row['orderstatus_ID'] == 1 or $row['orderstatus_ID'] == 2) {
-                                echo "<a href='user_payment.php?orderID=" . $row['order_ID'] . "' class='btn btn-primary'>Details</a>";
+                                echo "<a href='user_payment.php?orderID=" . $row['order_ID'] . "' class='btn btn-success'>ชำระงิน</a>";
                             } else {
-                                echo "<button class='btn btn-primary' disabled>Details</button>";
+                                echo "<button class='btn btn-success' disabled>ชำระงิน</button>";
                             }
                             echo "</td>";
 
@@ -91,7 +91,7 @@ if (!isset($_SESSION['user_ID'])) {
                                         <form method='POST' onsubmit='return confirm(\"Are you sure you want to cancel this order?\");'>
                                             <input type='hidden' name='cancelOrder' value='1'>
                                             <input type='hidden' name='orderID' value='" . $row['order_ID'] . "'>
-                                            <button type='submit' class='btn btn-danger'>Cancel Order</button>
+                                            <button type='submit' class='btn btn-danger'>ยกเลิกคำสั่งซื้อ</button>
                                         </form>
                                       </td>";
                             } else {
@@ -99,7 +99,7 @@ if (!isset($_SESSION['user_ID'])) {
                                 <form method='POST' onsubmit='return confirm(\"Are you sure you want to cancel this order?\");'>
                                     <input type='hidden' name='cancelOrder' value='1'>
                                     <input type='hidden' name='orderID' value='" . $row['order_ID'] . "'>
-                                    <button type='submit' class='btn btn-danger'disabled>Cancel Order</button>
+                                    <button type='submit' class='btn btn-danger'disabled>ยกเลิกคำสั่งซื้อ</button>
                                 </form>
                               </td>";
                             }

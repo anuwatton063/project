@@ -108,22 +108,22 @@ $offset = ($page - 1) * $perPage;
                 <col width="15%"> <!-- Adjusted width for date_time column -->
                 <thead>
                     <tr>
-                        <th>Order ID</th>
+                        <th>ID</th>
                         <th>User ID</th>
-                        <th>Order Status</th>
-                        <th>Shipping Status</th>
-                        <th>Total Price</th>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Address Information</th>
-                        <th>Tumbon</th>
-                        <th>Amphoe</th>
-                        <th>Province</th>
-                        <th>Zipcode</th>
-                        <th>Date and Time</th> <!-- New column header -->
-                        <th>View Details</th>
+                        <th>สถานะสินค้า</th>
+                        <th>การจัดส่ง</th>
+                        <th>ราคา</th>
+                        <th>ชื่อ</th>
+                        <th>เบอร์โทรศัพท์</th>
+                        <th>ข้อมูลที่อยู่</th>
+                        <th>ตำบล</th>
+                        <th>อำเภอ</th>
+                        <th>จังหวัด</th>
+                        <th>รหัสไปรษณีย์</th>
+                        <th>เวลาการสั่งซื้อ</th> <!-- New column header -->
+                        <th>รายระเอียด</th>
                         <th>Delete</th>
-                        <th>Change Status</th>
+                        <th>เปลี่ยนสถานนะ</th>
                     </tr>
                 </thead>
                 <tbody>

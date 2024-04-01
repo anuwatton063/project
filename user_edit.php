@@ -111,11 +111,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="text" class="form-control" id="username" name="username" value="<?= $user_data['username']; ?>" readonly>
             </div>
             <div class="form-group">
-                <label for="fname">First Name</label>
+                <label for="fname">ชื่อจริง</label>
                 <input type="text" class="form-control" id="fname" name="fname" value="<?= $user_data['fname']; ?>">
             </div>
             <div class="form-group">
-                <label for="lname">Last Name</label>
+                <label for="lname">นามสกุล</label>
                 <input type="text" class="form-control" id="lname" name="lname" value="<?= $user_data['lname']; ?>">
             </div>
             <div class="form-group">

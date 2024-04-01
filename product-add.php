@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h1>Add New Product</h1>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data" id="addForm">
             <!-- Product Type ID -->
-            <label for="product_type_ID">Product Type:</label><br>
+            <label for="product_type_ID">ประเภทสินค้า:</label><br>
             <select id="product_type_ID" name="product_type_ID" required>
                 <?php
                 while ($type = mysqli_fetch_assoc($productTypesResult)) {
@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </select><br>
 
             <!-- Product Brand ID -->
-            <label for="product_brand_ID">Product Brand:</label><br>
+            <label for="product_brand_ID">ยี่ห้อสินค้า:</label><br>
             <select id="product_brand_ID" name="product_brand_ID" required>
                 <?php
                 while ($brand = mysqli_fetch_assoc($productBrandsResult)) {
@@ -103,41 +103,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </select><br>
 
             <!-- Product Color -->
-            <label for="product_color">Product Color:</label><br>
+            <label for="product_color">สี:</label><br>
             <input type="text" id="product_color" name="product_color" required><br>
 
             <!-- Phone Capacity -->
-            <label for="phone_capacity">Phone Capacity:</label><br>
+            <label for="phone_capacity">ความจุ:</label><br>
             <input type="text" id="phone_capacity" name="phone_capacity" required><br>
 
             <!-- Product Stock -->
-            <label for="product_stock">Product Stock:</label><br>
+            <label for="product_stock">จำนวนสินค้า:</label><br>
             <input type="number" id="product_stock" name="product_stock" required><br>
 
             <!-- Product Name -->
-            <label for="product_name">Product Name:</label><br>
+            <label for="product_name">ชื่อ:</label><br>
             <input type="text" id="product_name" name="product_name" required><br>
 
             <!-- Product Detail -->
-            <label for="product_detail">Product Detail:</label><br>
+            <label for="product_detail">รายระเอียด:</label><br>
             <textarea id="product_detail" name="product_detail" rows="4" required></textarea><br>
 
             <!-- Product Price -->
-            <label for="product_price">Product Price:</label><br>
+            <label for="product_price">ราคา:</label><br>
             <input type="number" id="product_price" name="product_price" required><br>
 
             <!-- Product Cover Image -->
-            <label for="product_cover_image">Product Cover Image:</label><br>
+            <label for="product_cover_image">ภาพสินค้า:</label><br>
             <input type="file" id="product_cover_image" name="product_cover_image" required onchange="previewImage('product_cover_image', 'coverImagePreview')"><br>
             <img id="coverImagePreview" src="#" alt="Cover Image Preview" style="max-width: 200px; max-height: 200px; display: none;"><br>
 
             <!-- Product Image 1 -->
-            <label for="product_Image1">Product Image 1:</label><br>
+            <label for="product_Image1">ภาพสินค้า 1:</label><br>
             <input type="file" id="product_Image1" name="product_Image1" onchange="previewImage('product_Image1', 'image1Preview')"><br>
             <img id="image1Preview" src="#" alt="Image 1 Preview" style="max-width: 200px; max-height: 200px; display: none;"><br>
 
             <!-- Product Image 2 -->
-            <label for="product_Image2">Product Image 2:</label><br>
+            <label for="product_Image2">ภาพสินค้า 2:</label><br>
             <input type="file" id="product_Image2" name="product_Image2" onchange="previewImage('product_Image2', 'image2Preview')"><br>
             <img id="image2Preview" src="#" alt="Image 2 Preview" style="max-width: 200px; max-height: 200px; display: none;"><br>
 

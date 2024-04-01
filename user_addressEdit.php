@@ -112,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['address_ID'])) {
 <body>
 
 <div class="container1">
-    <h2>Thailand Address Form</h2>
+    <h2>แก้ไขข้อมูล</h2>
     <form method="POST" action="">
         <div class="form-control">
             <span>ตำบล/แขวง</span>

@@ -133,7 +133,7 @@ $row = mysqli_fetch_assoc($result); // Fetch product details
     <div class="container">
         <h1>Edit Product</h1>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?id=' . $product_id; ?>" method="POST" enctype="multipart/form-data" id="editForm">
-            <label for="product_type_ID">Product Type:</label><br>
+            <label for="product_type_ID">ประเภทสินค้า:</label><br>
             <select id="product_type_ID" name="product_type_ID">
                 <?php
                 $sql_types = "SELECT * FROM products_types";
@@ -150,7 +150,7 @@ $row = mysqli_fetch_assoc($result); // Fetch product details
                 ?>
             </select><br>
 
-            <label for="product_brand_ID">Product Brand:</label><br>
+            <label for="product_brand_ID">ยี่ห้อสินค้า:</label><br>
             <select id="product_brand_ID" name="product_brand_ID">
                 <?php
                 $sql_brands = "SELECT * FROM product_brand";
@@ -167,37 +167,37 @@ $row = mysqli_fetch_assoc($result); // Fetch product details
                 ?>
             </select><br>
 
-            <label for="product_color">Product Color:</label><br>
+            <label for="product_color">สี:</label><br>
             <input type="text" id="product_color" name="product_color" value="<?php echo $row['product_color']; ?>"><br>
 
-            <label for="phone_capacity">Phone Capacity:</label><br>
+            <label for="phone_capacity">ความจุ:</label><br>
             <input type="text" id="phone_capacity" name="phone_capacity" value="<?php echo $row['Phone_capacity']; ?>"><br>
 
-            <label for="product_stock">Product Stock:</label><br>
+            <label for="product_stock">จำนวนสินค้า:</label><br>
             <input type="number" id="product_stock" name="product_stock" value="<?php echo $row['product_stock']; ?>"><br>
 
-            <label for="product_name">Product Name:</label><br>
+            <label for="product_name">ชื่อ:</label><br>
             <input type="text" id="product_name" name="product_name" value="<?php echo $row['product_name']; ?>"><br>
 
-            <label for="product_detail">Product Detail:</label><br>
+            <label for="product_detail">รายระเอียด:</label><br>
             <textarea id="product_detail" name="product_detail"><?php echo $row['product_detail']; ?></textarea><br>
 
-            <label for="product_price">Product Price:</label><br>
+            <label for="product_price">ราคา:</label><br>
             <input type="number" id="product_price" name="product_price" value="<?php echo $row['product_price']; ?>"><br>
 
-            <label for="product_cover_image">Product Cover Image:</label><br>
+            <label for="product_cover_image">ภาพสินค้า:</label><br>
             <input type="file" id="product_cover_image" name="product_cover_image" onchange="previewImage(this, 'coverImagePreview')"><br>
             <?php if (!empty($row['product_cover_image'])): ?>
                 <img id="coverImagePreview" src="../project/png/<?php echo $row['product_cover_image']; ?>" alt="Product Cover Image" style="max-width: 200px;"><br>
             <?php endif; ?>
 
-            <label for="product_Image1">Product Image 1:</label><br>
+            <label for="product_Image1">ภาพสินค้า 1:</label><br>
             <input type="file" id="product_Image1" name="product_Image1" onchange="previewImage(this, 'image1Preview')"><br>
             <?php if (!empty($row['product_Image1'])): ?>
                 <img id="image1Preview" src="../project/png/<?php echo $row['product_Image1']; ?>" alt="Product Image 1" style="max-width: 200px;"><br>
             <?php endif; ?>
 
-            <label for="product_Image2">Product Image 2:</label><br>
+            <label for="product_Image2">ภาพสินค้า 2:</label><br>
             <input type="file" id="product_Image2" name="product_Image2" onchange="previewImage(this, 'image2Preview')"><br>
             <?php if (!empty($row['product_Image2'])): ?>
                 <img id="image2Preview" src="../project/png/<?php echo $row['product_Image2']; ?>" alt="Product Image 2" style="max-width: 200px;"><br>

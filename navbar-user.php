@@ -10,7 +10,6 @@
         <div class="collapse navbar-collapse" id="userNavbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.php">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="">About</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="userNavbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                     <ul class="dropdown-menu" aria-labelledby="userNavbarDropdown">

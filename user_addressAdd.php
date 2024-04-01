@@ -102,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="container container1">
-        <h2>Thailand Address Form</h2>
+        <h2>เพิ่มข้อมูล</h2>
         <div class="form-control">
             <span>ตำบล/แขวง</span>
             <input id="sub_district" type="text" class="txt" placeholder="ตำบล">

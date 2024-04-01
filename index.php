@@ -75,6 +75,7 @@ $sql = "SELECT products_phone.*, products_types.type_name
         FROM products_phone 
         INNER JOIN products_types 
         ON products_phone.product_type_ID = products_types.product_type_ID 
+        WHERE products_phone.product_stock > 0
         ORDER BY products_phone.product_type_ID 
         LIMIT $offset, $productsPerPage";
 
@@ -122,7 +123,7 @@ if ($result && mysqli_num_rows($result) > 0) {
     echo '</div></div></section>';
 
     // Pagination links
-    $totalPagesSql = "SELECT COUNT(*) as count FROM products_phone";
+    $totalPagesSql = "SELECT COUNT(*) as count FROM products_phone WHERE product_stock > 0";
     $totalPagesResult = mysqli_query($conn, $totalPagesSql);
     $totalRows = mysqli_fetch_assoc($totalPagesResult)['count'];
     $totalPages = ceil($totalRows / $productsPerPage);

@@ -62,22 +62,22 @@ if(isset($_GET['orderID'])) {
 
 <body>
     <div class="container">
-        <h1 class="mt-5">Order Details</h1>
+        <h1 class="mt-5">รายระเอีดข้อมูล</h1>
         
         <!-- Display address information -->
         <div class="mt-4">
-            <h2>Address Information</h2>
+            <h2>ข้อมูลที่อยู่</h2>
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Address ID</th>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Address Information</th>
-                        <th>Tumbon</th>
-                        <th>Amphoe</th>
-                        <th>Province</th>
-                        <th>Zipcode</th>
+                        <th>ID</th>
+                        <th>ชื่อ</th>
+                        <th>เบอร์โทรศัพท์</th>
+                        <th>ข้อมูลที่อยู่</th>
+                        <th>ตำบล</th>
+                        <th>อำเภอ</th>
+                        <th>จังหวัด</th>
+                        <th>รหัสไปรษณีย์</th><br>
                     </tr>
                 </thead>
                 <tbody>
@@ -106,15 +106,15 @@ if(isset($_GET['orderID'])) {
         
         <!-- Display order details -->
         <div class="table-responsive mt-4">
-            <h2>Order Items</h2>
+            <br><h2>รายระเอียดสินค้า</h2>
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Product</th>
-                        <th>Name</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Total Price</th>
+                        <th></th>
+                        <th>ชื่อ</th>
+                        <th>จำนวน</th>
+                        <th>ราคา</th>
+                        <th>ราคารวม</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -141,14 +141,14 @@ if(isset($_GET['orderID'])) {
 
         <!-- Display payment details -->
         <div class="mt-4">
-            <h2>Payment Information</h2>
+            <h2>การชำระเงิน</h2>
             <table class="table">
                 <thead>
                     <tr>
                         <th>Order ID</th>
-                        <th>Net Price</th>
-                        <th>Transfer Slip</th>
-                        <th>Paid Date Time</th>
+                        <th>ราคารวม</th>
+                        <th>สลิปการโอนเงิน</th>
+                        <th>เวลาการจ่ายเงิน</th>
                     </tr>
                 </thead>
                 <tbody>

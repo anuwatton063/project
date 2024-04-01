@@ -65,18 +65,18 @@ $stmt->close();
     <!-- This part has already been included at the top -->
 
     <div class="container">
-        <h1>User Addresses</h1>
+        <br><h1>ข้อมูลที่อยู่</h1><br>
 
         <table class="table">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Phone</th>
-                    <th>Address Information</th>
-                    <th>Tumbon</th>
-                    <th>Amphoe</th>
-                    <th>Province</th>
-                    <th>Zipcode</th>
+                    <th>ชื่อผู้รับ</th>
+                    <th>เบอร์โทรศัพท์</th>
+                    <th>ข้อมูลที่อยู่</th>
+                    <th>ตำบล</th>
+                    <th>อำเภอ</th>
+                    <th>จังหวัด</th>
+                    <th>รหัสไปรษณีย์</th>
                     <th>Actions</th>
                 </tr>
             </thead>

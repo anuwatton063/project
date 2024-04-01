@@ -132,6 +132,12 @@ $conn->close();
 </div>
 
 <script>
+    // JavaScript function to validate email format
+    function validateEmail(email) {
+        var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+
     // JavaScript function to handle errors
     function showError(fieldId, errorMessage) {
         document.getElementById(fieldId + "Error").innerText = errorMessage;
@@ -145,8 +151,13 @@ $conn->close();
     });
 
     document.getElementById("email").addEventListener("input", function() {
-        document.getElementById("emailError").innerText = "";
-        document.getElementById("email").classList.remove("is-invalid");
+        var email = document.getElementById("email").value;
+        if (!validateEmail(email)) {
+            showError("email", "โปรดระบุอีเมล์ที่ถูกต้อง");
+        } else {
+            document.getElementById("emailError").innerText = "";
+            document.getElementById("email").classList.remove("is-invalid");
+        }
     });
 
     // Check if confirmPassword matches password
@@ -165,6 +176,18 @@ $conn->close();
         }
     });
 
+    // Check password length
+    document.getElementById("password").addEventListener("input", function() {
+        var password = document.getElementById("password").value;
+
+        if (password.length < 8) {
+            showError("password", "รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร");
+        } else {
+            document.getElementById("passwordError").innerText = "";
+            document.getElementById("password").classList.remove("is-invalid");
+        }
+    });
+
     // Prevent form submission if there are errors
     document.getElementById("registerButton").addEventListener("click", function(event) {
         var errorsExist = false;
@@ -172,9 +195,15 @@ $conn->close();
         var password = document.getElementById("password").value;
         var confirmPassword = document.getElementById("confirmPassword").value;
 
-        if (password !== confirmPassword) {
-            showError("password", "กรุณากรอกรหัสให้ตรงกัน");
-            showError("confirmPassword", "กรุณากรอกรหัสให้ตรงกัน");
+        if (password !== confirmPassword || password.length < 8) {
+            showError("password", "กรุณากรอกรหัสให้ตรงกันและมีความยาวอย่างน้อย 8 ตัวอักษร");
+            showError("confirmPassword", "กรุณากรอกรหัสให้ตรงกันและมีความยาวอย่างน้อย 8 ตัวอักษร");
+            errorsExist = true;
+        }
+
+        var email = document.getElementById("email").value;
+        if (!validateEmail(email)) {
+            showError("email", "โปรดระบุอีเมล์ที่ถูกต้อง");
             errorsExist = true;
         }
 
@@ -182,8 +211,8 @@ $conn->close();
             event.preventDefault();
         }
     });
-    
 </script>
+
 
 </body>
 </html>
