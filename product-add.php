@@ -119,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="text" id="product_name" name="product_name" required><br>
 
             <!-- Product Detail -->
-            <label for="product_detail">รายระเอียด:</label><br>
+            <label for="product_detail">รายละเอียด:</label><br>
             <textarea id="product_detail" name="product_detail" rows="4" required></textarea><br>
 
             <!-- Product Price -->

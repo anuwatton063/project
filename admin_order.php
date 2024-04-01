@@ -121,7 +121,7 @@ $offset = ($page - 1) * $perPage;
                         <th>จังหวัด</th>
                         <th>รหัสไปรษณีย์</th>
                         <th>เวลาการสั่งซื้อ</th> <!-- New column header -->
-                        <th>รายระเอียด</th>
+                        <th>รายละเอียด</th>
                         <th>Delete</th>
                         <th>เปลี่ยนสถานนะ</th>
                     </tr>
@@ -189,7 +189,7 @@ $offset = ($page - 1) * $perPage;
                             echo "<td>
                                     <form method='post'>
                                         <input type='hidden' name='orderID' value='" . $row['order_ID'] . "' />
-                                        <button type='submit' name='deleteOrder' class='btn btn-danger' disabled onclick='return confirm(\"Are you sure you want to delete this order?\")'>Delete</button>
+                                        <button type='submit' name='deleteOrder' class='btn btn-danger'  onclick='return confirm(\"Are you sure you want to delete this order?\")'>Delete</button>
                                     </form>
                                 </td>"; // Delete button
                             echo "<td><a href='admin_orderEdit.php?orderID=" . $row['order_ID'] . "' class='btn btn-primary'>Change Status</a></td>"; // Change status button

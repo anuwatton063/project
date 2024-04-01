@@ -217,7 +217,7 @@ if ($total_pages > 1) {
                     <th><a href="?sort=Phone_capacity<?= $sort == 'Phone_capacity' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'Phone_capacity' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">ความจุ</a></th>
                     <th><a href="?sort=product_stock<?= $sort == 'product_stock' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_stock' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">จำนวนสินค้า</a></th>
                     <th><a href="?sort=product_name<?= $sort == 'product_name' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_name' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">ชื่อ</a></th>
-                    <th><a href="?sort=product_detail<?= $sort == 'product_detail' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_detail' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">รายระเอียด</a></th>
+                    <th><a href="?sort=product_detail<?= $sort == 'product_detail' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_detail' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">รายละเอียด</a></th>
                     <th>ภาพสินค้า</th>
                     <th><a href="?sort=product_price<?= $sort == 'product_price' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_price' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">ราคา</a></th>
                     <th>ภาพสินค้า 1</th>

@@ -73,7 +73,7 @@ if (!isset($_SESSION['user_ID'])) {
                             echo "<td>" . $row['order_ID'] . "</td>";
                             echo "<td>" . $row['order_status'] . "</td>";
                             echo "<td>" . $row['status_name'] . "</td>";
-                            echo "<td>฿ " . $row['net_price'] . "</td>";
+                            echo "<td>฿ " . number_format($row['net_price'],2) . "</td>";
                             echo "<td>" . date('d/m/Y H:i:s', strtotime($row['date_time'])) . "</td>";
                             echo "<td><a href='user_orderDetail.php?orderID=" . $row['order_ID'] . "' class='btn btn-primary'>รายระเอียด</a></td>";
 

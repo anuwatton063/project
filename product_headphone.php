@@ -126,7 +126,7 @@ $offset = ($page - 1) * $productsPerPage;
                               FROM product_brand pb
                               INNER JOIN products_phone pp ON pb.product_brand_ID = pp.product_brand_ID
                               INNER JOIN products_types pt ON pp.product_type_ID = pt.product_type_ID
-                              WHERE pt.type_name = 'เคส'";
+                              WHERE pt.type_name = 'หูฟัง'";
                 $resultBrands = mysqli_query($conn, $sqlBrands);
 
                 // Check if there are any brands available with phones
@@ -152,7 +152,7 @@ $offset = ($page - 1) * $productsPerPage;
                         FROM products_phone pp
                         INNER JOIN products_types pt ON pp.product_type_ID = pt.product_type_ID 
                         WHERE pp.product_brand_ID = $selectedBrandID
-                        AND pt.type_name = 'เคส'
+                        AND pt.type_name = 'หูฟัง'
                         ORDER BY pp.product_type_ID
                         LIMIT $offset, $productsPerPage";
             } else {
@@ -160,7 +160,7 @@ $offset = ($page - 1) * $productsPerPage;
                 $sql = "SELECT pp.*, pt.type_name 
                         FROM products_phone pp
                         INNER JOIN products_types pt ON pp.product_type_ID = pt.product_type_ID 
-                        WHERE pt.type_name = 'เคส'
+                        WHERE pt.type_name = 'หูฟัง'
                         ORDER BY pp.product_type_ID
                         LIMIT $offset, $productsPerPage";
             }
@@ -217,11 +217,11 @@ $offset = ($page - 1) * $productsPerPage;
                 // Display pagination only if there are more than $productsPerPage items
                 if (!isset($_GET['brand_id'])) {
                     // Pagination links
-                    $sqlCount = "SELECT COUNT(*) as count FROM products_phone WHERE product_type_ID = (SELECT product_type_ID FROM products_types WHERE type_name = 'เคส')";
+                    $sqlCount = "SELECT COUNT(*) as count FROM products_phone WHERE product_type_ID = (SELECT product_type_ID FROM products_types WHERE type_name = 'หูฟัง')";
                 } else {
                     // Pagination links for selected brand
                     $selectedBrandID = $_GET['brand_id'];
-                    $sqlCount = "SELECT COUNT(*) as count FROM products_phone WHERE product_brand_ID = $selectedBrandID AND product_type_ID = (SELECT product_type_ID FROM products_types WHERE type_name = 'เคส')";
+                    $sqlCount = "SELECT COUNT(*) as count FROM products_phone WHERE product_brand_ID = $selectedBrandID AND product_type_ID = (SELECT product_type_ID FROM products_types WHERE type_name = 'หูฟัง')";
                 }
 
                 $resultCount = mysqli_query($conn, $sqlCount);

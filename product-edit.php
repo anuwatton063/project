@@ -179,7 +179,7 @@ $row = mysqli_fetch_assoc($result); // Fetch product details
             <label for="product_name">ชื่อ:</label><br>
             <input type="text" id="product_name" name="product_name" value="<?php echo $row['product_name']; ?>"><br>
 
-            <label for="product_detail">รายระเอียด:</label><br>
+            <label for="product_detail">รายละเอียด:</label><br>
             <textarea id="product_detail" name="product_detail"><?php echo $row['product_detail']; ?></textarea><br>
 
             <label for="product_price">ราคา:</label><br>
