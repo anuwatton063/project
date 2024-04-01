@@ -64,7 +64,7 @@ if (!$user_data) {
         }
 
         .card-header {
-            background-color: #007bff;
+            background-color: #404040;
             color: #fff;
             border-radius: 10px 10px 0 0;
         }
@@ -97,7 +97,7 @@ if (!$user_data) {
     <div class="container2 mt-4">
         <div class="card">
             <div class="card-header">
-                <h2 class="text-center">User Information</h2>
+                <h2 class="text-center">ข้อมูลผู้ใช้</h2>
             </div>
             <div class="card-body">
                 <div class="row">
