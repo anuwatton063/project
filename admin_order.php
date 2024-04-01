@@ -176,7 +176,7 @@ $offset = ($page - 1) * $perPage;
                             echo "<td>" . $row['user_ID'] . "</td>";
                             echo "<td>" . $row['order_status'] . "</td>";
                             echo "<td>" . $row['status_name'] . "</td>";
-                            echo "<td>$" . $row['net_price'] . "</td>";
+                            echo "<td>฿ " . $row['net_price'] . "</td>";
                             echo "<td>" . $row['name'] . "</td>";
                             echo "<td>" . $row['phone'] . "</td>";
                             echo "<td>" . $row['Address_information'] . "</td>";
@@ -189,7 +189,7 @@ $offset = ($page - 1) * $perPage;
                             echo "<td>
                                     <form method='post'>
                                         <input type='hidden' name='orderID' value='" . $row['order_ID'] . "' />
-                                        <button type='submit' name='deleteOrder' class='btn btn-danger' onclick='return confirm(\"Are you sure you want to delete this order?\")'>Delete</button>
+                                        <button type='submit' name='deleteOrder' class='btn btn-danger' disabled onclick='return confirm(\"Are you sure you want to delete this order?\")'>Delete</button>
                                     </form>
                                 </td>"; // Delete button
                             echo "<td><a href='admin_orderEdit.php?orderID=" . $row['order_ID'] . "' class='btn btn-primary'>Change Status</a></td>"; // Change status button

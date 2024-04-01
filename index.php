@@ -30,7 +30,7 @@ $offset = ($page - 1) * $productsPerPage;
     <style>
         /* Custom styles can be added here */
         .card {
-            max-width: 300px; /* Set maximum width for the card */
+            max-width: 250px; /* Set maximum width for the card */
         }
         .card-img-top {
             width: 100%; /* Set width to 100% to make it fill the container */
@@ -107,7 +107,7 @@ if ($result && mysqli_num_rows($result) > 0) {
                             <div class="text-center">
                                 <h5 class="fw-bolder">' . $row['product_name'] . '</h5>
                                 
-                                ' . '$' . $row['product_price'] . '
+                                ' . '฿' . $row['product_price'] . '
                             </div>
                         </div>
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">

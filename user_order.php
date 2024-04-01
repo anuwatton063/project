@@ -78,7 +78,7 @@ if (!isset($_SESSION['user_ID'])) {
                             echo "<td><a href='user_orderDetail.php?orderID=" . $row['order_ID'] . "' class='btn btn-primary'>View Details</a></td>";
 
                             echo "<td>";
-                            if ($row['orderstatus_ID'] == 1) {
+                            if ($row['orderstatus_ID'] == 1 or $row['orderstatus_ID'] == 2) {
                                 echo "<a href='user_payment.php?orderID=" . $row['order_ID'] . "' class='btn btn-primary'>Details</a>";
                             } else {
                                 echo "<button class='btn btn-primary' disabled>Details</button>";

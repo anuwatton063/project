@@ -200,7 +200,7 @@ $offset = ($page - 1) * $productsPerPage;
                                     <div class="card-body p-4">
                                         <div class="text-center">
                                             <h5 class="fw-bolder">' . $row['product_name'] . '</h5>
-                                            ' . '$' . $row['product_price'] . '
+                                            ' . '฿' . $row['product_price'] . '
                                         </div>
                                     </div>
                                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">

@@ -49,8 +49,8 @@ if(isset($_GET['id'])) {
             width: 5%;
         }
         .carousel-item img {
-            max-height: 200px;
-            max-width: 200px;
+            max-height: 300px;
+            max-width: 300px;
             margin: auto;
         }
         .product-info {
@@ -108,6 +108,7 @@ if(isset($_GET['id'])) {
                         <span><?php echo '฿'. $row['product_price']; ?></span>
                         <?php if (!empty($row['product_color'])): ?>
                             <span class="ms-3">Color: <?php echo$row['product_color']; ?></span>
+                            <span class="ms-3">capacity: <?php echo$row['Phone_capacity']; ?></span>
                         <?php endif; ?>
                     </div>
                     <p class="lead">In Stock: <?php echo $row['product_stock']; ?></p>

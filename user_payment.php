@@ -129,9 +129,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["transfer_slip"])) {
             font-family: Arial, sans-serif;
         }
 
-        .container {
-            margin-top: 50px;
-        }
 
         .btn-primary {
             background-color: #007bff;
@@ -200,11 +197,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["transfer_slip"])) {
                 <h2>Order Details</h2>
                 <table class="table">
                     <tr>
-                        <th>Order ID</th>
-                        <td><?php echo $_GET['orderID']; ?></td>
+                        
+                        <td>Order ID : <?php echo $_GET['orderID']; ?></td>
                     </tr>
                     <tr>
-                        <td>Total Price: $<?php echo $total_price; ?></td>
+                        <td>Total Price : ฿ <?php echo $total_price; ?></td>
                     </tr>
                 </table>
             </div>

@@ -116,7 +116,7 @@ if(isset($_POST['address'])) {
                                 <tbody>
                                     <tr>
                                         <td style="width: 25%;">
-                                            <img src="<?php echo htmlspecialchars($item['image']); ?>" alt="Product Image" class="img-fluid rounded" style="max-width: 100%; height: auto; object-fit: contain;">
+                                            <img src="<?php echo htmlspecialchars($item['image']); ?>" alt="Product Image" class="img-fluid rounded" style="max-width: 100%; height: 200px; object-fit: contain;">
                                         </td>
                                         <td style="width: 25%;">
                                             <h5 class="card-title"><?php echo htmlspecialchars($item['productName']); ?></h5>
