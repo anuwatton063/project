@@ -45,7 +45,7 @@ if (!isset($_SESSION['user_ID'])) {
                         <th>การจัดส่ง</th>
                         <th>ราคา</th>
                         <th>วันที่สั่งซื้อ</th>
-                        <th>รายระเอียด</th>
+                        <th>รายละเอียด</th>
                         <th>ชำระเงิน</th>
                         <th>ยกเลิกคำสั่งซื้อ</th> <!-- New column for Cancel Order button -->
                     </tr>

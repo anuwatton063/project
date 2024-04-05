@@ -62,7 +62,7 @@ if(isset($_GET['orderID'])) {
 
 <body>
     <div class="container">
-        <h1 class="mt-5">รายระเอียดข้อมูล</h1>
+        <h1 class="mt-5">รายละเอียดข้อมูล</h1>
         
         <!-- Display address information -->
         <div class="mt-4">
@@ -106,7 +106,7 @@ if(isset($_GET['orderID'])) {
         
         <!-- Display order details -->
         <div class="table-responsive mt-4">
-            <br><h2>รายระเอียดสินค้า</h2>
+            <br><h2>รายละเอียดสินค้า</h2>
             <table class="table table-striped">
                 <thead>
                     <tr>
