@@ -204,6 +204,8 @@ if ($total_pages > 1) {
             <!-- Add product button -->
             <div class="col-md-6 text-right">
                 <a class="btn btn-success mr-2" href="product-add.php">Add Product</a>
+                <a class="btn btn-success mr-2" href="admin_addProductType.php">Add Product Type</a>
+                <a class="btn btn-success mr-2" href="admin_addProductBrand.php">Add Product Brand</a>
             </div>
         </div>
         <!-- Product table -->
