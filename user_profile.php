@@ -1,21 +1,15 @@
 <?php
-
-
-// Include necessary files and check user type
 include('navbar-user.php');
 include('condb.php');
 include('checkuser.php');
 
-// Check if user is logged in
 if (!isset($_SESSION['user_ID'])) {
-    header("Location: login.php"); // Redirect to login page if user is not logged in
+    header("Location: login.php"); 
     exit();
 }
 
-// Get logged-in user ID securely
 $user_id = isset($_SESSION['user_ID']) ? mysqli_real_escape_string($conn, $_SESSION['user_ID']) : '';
 
-// Query to fetch user information using prepared statement
 $sql = "SELECT * FROM `user_information` WHERE `user_ID` = ?";
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_bind_param($stmt, "i", $user_id);
@@ -23,9 +17,7 @@ mysqli_stmt_execute($stmt);
 $query = mysqli_stmt_get_result($stmt);
 $user_data = mysqli_fetch_assoc($query);
 
-// Check if the user exists
 if (!$user_data) {
-    // Redirect to an error page or handle accordingly
     header("Location: error.php");
     exit();
 }
@@ -34,19 +26,14 @@ if (!$user_data) {
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" /> <!-- ย้าย 'viewport' meta element ไปยังส่วน '<head>' -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>User Information</title>
-    <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <!-- Bootstrap CSS-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <!-- Custom CSS -->
     <style>
-        /* Custom Styles */
         body {
             background-color: #f8f9fa;
             font-family: Arial, sans-serif;
@@ -110,7 +97,6 @@ if (!$user_data) {
                         </ul>
                     </div>
                 </div>
-                <!-- Button to redirect to edit page -->
                 <div class="text-center mt-3">
                     <a href="user_edit.php" class="btn btn-primary">Edit Information</a>
                 </div>

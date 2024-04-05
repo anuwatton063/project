@@ -8,77 +8,67 @@ if ($user_type_ID == 1) {
     include 'navbar-admin.php';
 }
 if ($user_type_ID != 1){
-    header("Location: index.php"); // Redirect to index.php
-    exit(); // Ensure script execution stops after redirection
+    header("Location: index.php"); 
+    exit(); 
 }
 
-// Check if the delete button is clicked and the product ID is provided
+
 if(isset($_POST['delete_id'])) {
-    // Get the product ID from the POST request
+
     $delete_id = $_POST['delete_id'];
 
-    // Prepare a delete statement
+
     $sql = "DELETE FROM `products_phone` WHERE product_ID = $delete_id";
 
-    // Execute the delete statement
+
     if(mysqli_query($conn, $sql)) {
-        // Product deleted successfully
-        // You can optionally redirect to another page or perform other actions here
+
     } else {
-        // If there was an error with the delete query
+
         echo "Error deleting product: " . mysqli_error($conn);
     }
 }
 
-// Define the number of products to display per page
+
 $products_per_page = 10;
 
-// Determine the current page number
+
 $current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 
-// Calculate the offset for the SQL query
+
 $offset = ($current_page - 1) * $products_per_page;
 
-// Sorting
-$sort = isset($_GET['sort']) ? $_GET['sort'] : 'product_ID'; // Default sorting by product_ID
-$order = isset($_GET['order']) && in_array($_GET['order'], ['asc', 'desc']) ? $_GET['order'] : 'asc'; // Default order is ascending
+$sort = isset($_GET['sort']) ? $_GET['sort'] : 'product_ID'; 
+$order = isset($_GET['order']) && in_array($_GET['order'], ['asc', 'desc']) ? $_GET['order'] : 'asc'; 
 $sort_options = array('product_ID', 'type_name', 'brand_name', 'product_color', 'Phone_capacity', 'product_stock', 'product_name', 'product_detail', 'product_price');
 if (!in_array($sort, $sort_options)) {
-    $sort = 'product_ID'; // If invalid sorting option provided, fallback to default
+    $sort = 'product_ID'; 
 }
 
-// Search functionality
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-// Query to fetch product information for the current page with sorting and search
 $sql = "SELECT p.*, pt.type_name, pb.brand_name 
         FROM `products_phone` p
         INNER JOIN `products_types` pt ON p.product_type_ID = pt.product_type_ID
         INNER JOIN `product_brand` pb ON p.product_brand_ID = pb.product_brand_ID";
 
-// Add search condition if search term is provided
 if (!empty($search)) {
     $sql .= " WHERE p.product_ID LIKE '%$search%' OR pt.type_name LIKE '%$search%' OR pb.brand_name LIKE '%$search%' OR p.product_color LIKE '%$search%' OR p.Phone_capacity LIKE '%$search%' OR p.product_stock LIKE '%$search%' OR p.product_name LIKE '%$search%' OR p.product_detail LIKE '%$search%' OR p.product_price LIKE '%$search%'";
 }
 
-// Add sorting
 $sql .= " ORDER BY $sort $order";
 
-// Add pagination
 $sql .= " LIMIT $offset, $products_per_page";
 
 $result = mysqli_query($conn, $sql);
 
-// Query to fetch total number of products
 $total_products_query = "SELECT COUNT(*) as total FROM `products_phone`";
 $total_result = mysqli_query($conn, $total_products_query);
 $total_row = mysqli_fetch_assoc($total_result);
 $total_products = $total_row['total'];
 
-// Calculate total pages
 $total_pages = ceil($total_products / $products_per_page);
 
-// Pagination links
 $pagination_links = "";
 if ($total_pages > 1) {
     $pagination_links .= "<div class='row'>
@@ -100,13 +90,10 @@ if ($total_pages > 1) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <!-- Favicon-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@5.3.0/font/bootstrap-icons.css" rel="stylesheet" />
-    <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
     <style>
-        /* Custom button style */
         .edit-btn,
         .delete-btn {
             display: inline-block;
@@ -114,8 +101,8 @@ if ($total_pages > 1) {
             border-radius: 5px;
             text-decoration: none;
             transition: background-color 0.3s;
-            width: 80px; /* Set width for buttons */
-            text-align: center; /* Center align text in buttons */
+            width: 80px; 
+            text-align: center;
         }
 
         .edit-btn {
@@ -138,9 +125,8 @@ if ($total_pages > 1) {
             background-color: #c82333;
         }
 
-        /* Style for sorting buttons */
         .sort-btn {
-            color: #000; /* Default color for sorting buttons */
+            color: #000; 
             text-decoration: none;
         }
 
@@ -158,30 +144,28 @@ if ($total_pages > 1) {
             content: '↓';
         }
 
-        /* Style for active sorting */
         .sort-asc.active,
         .sort-desc.active {
-            color: green; /* Color for active sorting */
+            color: green; 
         }
 
-        /* Add border and background color to table */
         .table {
-            border: 1px solid #dee2e6; /* Table border */
+            border: 1px solid #dee2e6;
         }
 
         th,
         td {
-            border: 1px solid #dee2e6; /* Border between rows */
-            padding: 8px; /* Padding from edge */
-            vertical-align: middle; /* Vertical alignment of content */
+            border: 1px solid #dee2e6; 
+            padding: 8px; 
+            vertical-align: middle; 
         }
 
         thead {
-            background-color: #f8f9fa; /* Background color of table head */
+            background-color: #f8f9fa; 
         }
 
         .btn-container {
-            white-space: nowrap; /* Prevent buttons from wrapping */
+            white-space: nowrap; 
         }
 
     </style>
@@ -190,25 +174,22 @@ if ($total_pages > 1) {
     <div class="container">
         <h1 class="mt-4">Product Editor</h1>
         <div class="row mb-3">
-            <!-- Search form -->
             <div class="col-md-6">
                 <form action="" method="GET" class="form-inline">
-                    <div class="input-group"> <!-- เพิ่มคลาส input-group -->
+                    <div class="input-group"> 
                         <input type="text" name="search" class="form-control mr-2" placeholder="Search" value="<?= htmlentities($search) ?>">
-                        <div class="input-group-append"> <!-- เพิ่มคลาส input-group-append -->
+                        <div class="input-group-append"> 
                             <button type="submit" class="btn btn-primary mr-3">Search</button>
                         </div>
                     </div>
                 </form>
             </div>
-            <!-- Add product button -->
             <div class="col-md-6 text-right">
                 <a class="btn btn-success mr-2" href="product-add.php">Add Product</a>
                 <a class="btn btn-success mr-2" href="admin_addProductType.php">Add Product Type</a>
                 <a class="btn btn-success mr-2" href="admin_addProductBrand.php">Add Product Brand</a>
             </div>
         </div>
-        <!-- Product table -->
         <table class="table">
             <thead>
                 <tr>
@@ -224,22 +205,19 @@ if ($total_pages > 1) {
                     <th><a href="?sort=product_price<?= $sort == 'product_price' ? '&order=' . ($order == 'asc' ? 'desc' : 'asc') : '' ?>" class="sort-btn <?= $sort == 'product_price' ? 'active ' . ($order == 'asc' ? 'sort-asc' : 'sort-desc') : '' ?>">ราคา</a></th>
                     <th>ภาพสินค้า 1</th>
                     <th>ภาพสินค้า 2</th>
-                    <th>Action</th> <!-- New column for editing actions -->
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 if (mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
-                        // Define base directory for image uploads
                         $base_dir = "../project/png/";
 
-                        // Fetch image paths
                         $cover_image_path = $base_dir . $row["product_cover_image"];
                         $image1_path = $base_dir . $row["product_Image1"];
                         $image2_path = $base_dir . $row["product_Image2"];
 
-                        // Check if the paths are not empty and the files exist
                         if (!empty($row["product_cover_image"]) && file_exists($cover_image_path)) {
                             $cover_image_html = "<img src='$cover_image_path' alt='Cover Image' width='100' />";
                         } else {
@@ -268,7 +246,7 @@ if ($total_pages > 1) {
                         echo "<td>" . $row["product_name"] . "</td>";
                         echo "<td>";
                         if (strlen($row["product_detail"]) > 20) {
-                            echo substr($row["product_detail"], 0, 20) . "..."; // Truncate the text if it exceeds 20 characters
+                            echo substr($row["product_detail"], 0, 20) . "...";
                         } else {
                             echo $row["product_detail"];
                         }
@@ -278,7 +256,6 @@ if ($total_pages > 1) {
                         echo "<td>$image1_html</td>";
                         echo "<td>$image2_html</td>";
                         echo "<td class='btn-container'><a class='edit-btn' href='product-edit.php?id=" . $row["product_ID"] . "'>Edit</a>";
-                                                // Delete button
                         echo "<form method='POST' onsubmit='return confirm(\"Are you sure you want to delete this product?\")' style='display:inline;'><input type='hidden' name='delete_id' value='" . $row["product_ID"] . "'><button type='submit' class='delete-btn'>Delete</button></form></td>";
                         echo "</tr>";
                     }
@@ -288,9 +265,7 @@ if ($total_pages > 1) {
                 ?>
             </tbody>
         </table>
-        <!-- Pagination links -->
         <?php
-        // Check if pagination should be displayed
         if ($total_pages > 1) {
             echo "<div class='row'>
                     <div class='col-md-12'>

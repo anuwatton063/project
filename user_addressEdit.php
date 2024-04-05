@@ -2,21 +2,16 @@
 include('condb.php');
 include 'navbar-user.php';
 
-// Check if the user is logged in
 if (!isset($_SESSION['user_ID'])) {
-    // Redirect to login page or perform any other action if the user is not logged in
     header("Location: login.php");
     exit();
 }
 
-// Get the user_ID from the session
 $user_ID = $_SESSION['user_ID'];
 
-// Check if address_ID is provided in the URL
 if (isset($_GET['address_id'])) {
     $address_ID = $_GET['address_id'];
 
-    // Fetch existing data from the database to populate the form
     $stmt = $conn->prepare("SELECT address_ID, name, phone, Address_information AS address, tumbon AS sub_district, amphoe AS district, province, Zipcode AS postcode FROM address WHERE user_ID=? AND address_ID=?");
     $stmt->bind_param("ii", $user_ID, $address_ID);
     $stmt->execute();
@@ -24,18 +19,14 @@ if (isset($_GET['address_id'])) {
     $row = $result->fetch_assoc();
     $stmt->close();
 } else {
-    // If address_ID is not provided, handle the error or redirect
     echo "Address ID not provided.";
     exit();
 }
 
-// Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['address_ID'])) {
-    // Prepare and bind the SQL statement to update existing data
     $stmt = $conn->prepare("UPDATE address SET name=?, phone=?, Address_information=?, tumbon=?, amphoe=?, province=?, Zipcode=? WHERE user_ID=? AND address_ID=?");
     $stmt->bind_param("ssssssiii", $name, $phone, $address, $sub_district, $district, $province, $postcode, $user_ID, $address_ID);
 
-    // Set parameters and execute
     $name = $_POST['name'];
     $phone = $_POST['phone'];
     $address = $_POST['address'];
@@ -45,15 +36,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['address_ID'])) {
     $postcode = $_POST['postcode'];
 
     if ($stmt->execute()) {
-        // Data updated successfully
         echo "<script>alert('Data updated successfully'); window.location.href = 'index.php';</script>";
     } else {
-        // Error in data update
         echo "<script>alert('Error: " . $stmt->error . "');</script>";
     }
-    // Close statement
     $stmt->close();
-    // Close connection
     $conn->close();
 }
 ?>
@@ -82,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['address_ID'])) {
 
         .container1 form {
             width: 50%;
-            max-width: 500px; /* ปรับขนาดฟอร์มได้ตามความเหมาะสม */
+            max-width: 500px;
         }
 
         .container1 .form-control {

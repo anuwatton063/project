@@ -10,14 +10,12 @@ include 'checkuser.php';
             
         }
         if ($user_type_ID != 1){
-            header("Location: index.php"); // Redirect to index.php
-            exit(); // Ensure script execution stops after redirection
+            header("Location: index.php"); 
+            exit(); 
         }
 
-// Get the user ID from the URL
 $user_id = $_GET['user_id'];
 
-// Query to fetch user's addresses and user information
 $sql = "SELECT a.*, ui.*
         FROM address a
         INNER JOIN user_information ui ON a.user_ID = ui.user_ID
@@ -27,7 +25,6 @@ $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Close statement
 $stmt->close();
 ?>
 <!DOCTYPE html>
@@ -38,11 +35,8 @@ $stmt->close();
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>admin user</title>
-    <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
 </head>
 <body>
@@ -60,7 +54,6 @@ $stmt->close();
                         <th>อำเภอ</th>
                         <th>จังหวัด</th>
                         <th>รหัสไปรษณีย์</th>
-                            <!-- Additional user information columns -->
                             
                         </tr>
                     </thead>
@@ -74,7 +67,6 @@ $stmt->close();
                                 <td><?php echo $row['amphoe']; ?></td>
                                 <td><?php echo $row['province']; ?></td>
                                 <td><?php echo $row['Zipcode']; ?></td>
-                                <!-- Display additional user information -->
                                 
                             </tr>
                         <?php endwhile; ?>

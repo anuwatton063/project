@@ -10,48 +10,38 @@ include 'checkuser.php';
             
         }
         if ($user_type_ID != 1){
-            header("Location: index.php"); // Redirect to index.php
-            exit(); // Ensure script execution stops after redirection
+            header("Location: index.php"); 
+            exit(); 
         }
 
-// Define the number of users to display per page
 $users_per_page = 15;
 
-// Determine the current page number
 $current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 
-// Calculate the offset for the SQL query
 $offset = ($current_page - 1) * $users_per_page;
 
-// Initialize search query variable
 $search_query = '';
 
-// If search query is provided, sanitize it
 if (isset($_GET['search'])) {
     $search_query = mysqli_real_escape_string($conn, $_GET['search']);
 }
 
-// Additional condition for SQL query based on search query
 $search_condition = '';
 if ($search_query !== '') {
     $search_condition = "AND (ui.user_ID LIKE '%$search_query%' OR ui.username LIKE '%$search_query%' OR ui.fname LIKE '%$search_query%' OR ui.lname LIKE '%$search_query%' OR ui.email LIKE '%$search_query%' OR ut.user_type_name LIKE '%$search_query%')"; // Include user_ID in search
 }
 
-// Initialize user type filter variable
 $user_type_filter = '';
 
-// If user type filter is provided, sanitize it
 if (isset($_GET['user_type'])) {
     $user_type_filter = mysqli_real_escape_string($conn, $_GET['user_type']);
 }
 
-// Additional condition for SQL query based on user type filter
 $user_type_condition = '';
 if ($user_type_filter !== '') {
     $user_type_condition = "AND ui.user_type_ID = '$user_type_filter'";
 }
 
-// Query to fetch user information for the current page with search condition
 $sql = "SELECT ui.*, ut.user_type_name 
         FROM `user_information` ui 
         INNER JOIN `user_type` ut ON ui.user_type_ID = ut.user_type_ID 
@@ -67,11 +57,8 @@ $query_sql = mysqli_query($conn, $sql);
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>admin user</title>
-    <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
 </head>
 <body>
@@ -97,7 +84,6 @@ $query_sql = mysqli_query($conn, $sql);
                     </form>
                 </div>
                 <?php
-                // Check if there's a message to display
                 if (isset($_GET['deleted']) && $_GET['deleted'] == 1) {
                     echo '<div id="successAlert" class="alert alert-success" role="alert">ลบผู้ใช้เรียบร้อยแล้ว</div>';
                 } elseif (isset($_GET['error']) && $_GET['error'] == 1) {
@@ -112,14 +98,13 @@ $query_sql = mysqli_query($conn, $sql);
                             <th>ชื่อจริง</th>
                             <th>นามสกุล</th>
                             <th>Email</th>
-                            <th>ประเภทผู้ใช้</th> <!-- New column for user type -->
-                            <th>Actions</th> <!-- New column for actions -->
-                            <th>ที่อยู่</th> <!-- New column for adding address -->
+                            <th>ประเภทผู้ใช้</th>
+                            <th>Actions</th> 
+                            <th>ที่อยู่</th> 
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        // Loop through each row of data
                         while ($row = mysqli_fetch_assoc($query_sql)) {
                             echo "<tr>";
                             echo "<td>" . $row['user_ID'] . "</td>";
@@ -127,7 +112,7 @@ $query_sql = mysqli_query($conn, $sql);
                             echo "<td>" . $row['fname'] . "</td>";
                             echo "<td>" . $row['lname'] . "</td>";
                             echo "<td>" . $row['email'] . "</td>";
-                            echo "<td>" . $row['user_type_name'] . "</td>"; // Display user type name
+                            echo "<td>" . $row['user_type_name'] . "</td>"; 
                             echo "<td>";
                             echo "<a href='admin_edit_user.php?id=" . $row['user_ID'] . "' class='btn btn-primary'>แก้ไข</a>";
                             echo "<a href='delete_user.php?id=" . $row['user_ID'] . "' class='btn btn-danger' onclick='return confirm(\"คุณแน่ใจหรือไม่ว่าต้องการลบผู้ใช้คนนี้?\")'>ลบ</a>";
@@ -141,7 +126,6 @@ $query_sql = mysqli_query($conn, $sql);
                     </tbody>
                 </table>
                 <?php
-                // Display pagination if there are more than one page
                 $total_users_query = mysqli_query($conn, "SELECT COUNT(*) AS total_users FROM `user_information` ui INNER JOIN `user_type` ut ON ui.user_type_ID = ut.user_type_ID WHERE 1=1 $search_condition $user_type_condition");
                 $total_users_data = mysqli_fetch_assoc($total_users_query);
                 $total_users = $total_users_data['total_users'];
@@ -159,18 +143,15 @@ $query_sql = mysqli_query($conn, $sql);
                 ?>
 
                 <script>
-                    // Function to show the success message
+                    
                     function showSuccessMessage() {
                         var alertBox = document.getElementById('successAlert');
-                        alertBox.style.display = 'block'; // Show the alert box
+                        alertBox.style.display = 'block'; 
 
-                        // Hide the alert box after 5 seconds
                         setTimeout(function() {
                             alertBox.style.display = 'none';
-                        }, 5000); // 5 seconds
+                        }, 5000); 
                     }
-
-                    // Call the function when the page loads
                     window.onload = function() {
                         showSuccessMessage();
                     };

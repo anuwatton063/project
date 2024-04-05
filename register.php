@@ -1,10 +1,10 @@
 <?php 
 include('condb.php'); 
 
-$insert_user_query = null; // ประกาศตัวแปรนอกเพื่อให้สามารถปิดได้ทุกกรณี
-$errors = []; // เก็บข้อผิดพลาดที่เกิดขึ้น
+$insert_user_query = null; 
+$errors = []; 
 
-// เรียกใช้งาน session_start() ก่อนการใช้งาน session
+
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -12,14 +12,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $password = $_POST["password"];
     $confirmPassword = $_POST["confirmPassword"];
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT); // Hash the password
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT); 
 
-    // Check if confirmPassword matches password
     if ($password !== $confirmPassword) {
         $errors[] = "Passwords do not match";
     }
 
-    // Check if username or email already exists in user_information table
     $check_user_query = $conn->prepare("SELECT * FROM user_information WHERE username=? OR email=?");
     $check_user_query->bind_param("ss", $username, $email);
     $check_user_query->execute();
@@ -35,13 +33,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // If there are no errors, proceed with user creation
     if (empty($errors)) {
-        // SQL to insert data into the database for user_information table
         $insert_user_query = $conn->prepare("INSERT INTO user_information (username, email, password) VALUES (?, ?, ?)");
         $insert_user_query->bind_param("sss", $username, $email, $hashed_password);
 
-        // Execute the SQL query
         if ($insert_user_query->execute()) {
             header("Location: login.php");
             exit();
@@ -50,7 +45,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // Close prepared statements
     $check_user_query->close();
     if ($insert_user_query != null) {
         $insert_user_query->close();
@@ -91,7 +85,6 @@ $conn->close();
             <div class="form-container">
                 <h2 class="mb-4">Registration Form</h2>
 
-                <!-- แสดงข้อผิดพลาด -->
                 <?php if (!empty($errors)): ?>
                     <div class="alert alert-danger mt-3" role="alert">
                         <ul>
@@ -132,19 +125,16 @@ $conn->close();
 </div>
 
 <script>
-    // JavaScript function to validate email format
     function validateEmail(email) {
         var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(email);
     }
 
-    // JavaScript function to handle errors
     function showError(fieldId, errorMessage) {
         document.getElementById(fieldId + "Error").innerText = errorMessage;
         document.getElementById(fieldId).classList.add("is-invalid");
     }
 
-    // Clear error messages when inputs are changed
     document.getElementById("username").addEventListener("input", function() {
         document.getElementById("usernameError").innerText = "";
         document.getElementById("username").classList.remove("is-invalid");
@@ -160,7 +150,6 @@ $conn->close();
         }
     });
 
-    // Check if confirmPassword matches password
     document.getElementById("confirmPassword").addEventListener("input", function() {
         var password = document.getElementById("password").value;
         var confirmPassword = document.getElementById("confirmPassword").value;
@@ -176,7 +165,6 @@ $conn->close();
         }
     });
 
-    // Check password length
     document.getElementById("password").addEventListener("input", function() {
         var password = document.getElementById("password").value;
 
@@ -188,7 +176,6 @@ $conn->close();
         }
     });
 
-    // Prevent form submission if there are errors
     document.getElementById("registerButton").addEventListener("click", function(event) {
         var errorsExist = false;
 

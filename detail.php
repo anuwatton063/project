@@ -2,11 +2,9 @@
 include('condb.php');
 include 'navbar-user.php';
 
-// Check if product ID is provided in the URL
 if(isset($_GET['id'])) {
     $product_id = $_GET['id'];
 
-    // Fetch product details from the database based on product ID
     $sql = "SELECT * FROM products_phone WHERE product_ID = $product_id";
     $result = mysqli_query($conn, $sql);
 
@@ -19,17 +17,12 @@ if(isset($_GET['id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $row['product_name']; ?></title>
-    <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <!-- Bootstrap core CSS -->
     <<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Custom styles for this page -->
     <style>
-        /* Add your custom styles here */
         body {
-            padding-top: 0px; /* Adjust according to your navbar height */
+            padding-top: 0px; 
         }
         .footer {
             position: fixed;
@@ -42,7 +35,7 @@ if(isset($_GET['id'])) {
         }
         .carousel-control-prev-icon,
         .carousel-control-next-icon {
-            background-color: black; /* Change the color to black */
+            background-color: black; 
         }
         .carousel-control-prev,
         .carousel-control-next {
@@ -54,20 +47,18 @@ if(isset($_GET['id'])) {
             margin: auto;
         }
         .product-info {
-            margin-top: 20px; /* Adjust as needed */
+            margin-top: 20px; 
         }
-        /* Centered alert message */
         .centered-alert {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 1000; /* Ensure the message is on top of everything */
+            z-index: 1000; 
         }
     </style>
 </head>
 <body>
-    <!-- Product section -->
     <section class="py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="row gx-4 gx-lg-5 align-items-start">
@@ -125,13 +116,9 @@ if(isset($_GET['id'])) {
             </div>
         </div>
     </section>
-    <!-- Footer -->
     <div id="alert-message-container"></div>
-    <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Custom JavaScript for adding to cart -->
     <script>
     function addToCartBackend(productId, productName, productPrice, productImage) {
         var quantityInput = document.getElementById('inputQuantity_' + productId);
@@ -145,22 +132,19 @@ if(isset($_GET['id'])) {
                 productName: productName,
                 quantity: quantity,
                 productPrice: productPrice,
-                productImage: productImage // Pass the product image URL
+                productImage: productImage 
             },
             success: function(response) {
                 console.log('Item added to cart successfully');
-                console.log('Response:', response); // Log the response received from the server
+                console.log('Response:', response); 
 
-                // Display a message on the webpage
                 var alertMessage = '<div class="alert alert-success alert-dismissible fade show centered-alert" role="alert">';
                 alertMessage += '<strong>Success!</strong> ได้นำสินค้าเข้าตะกร้าแล้ว';
                 alertMessage += '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
                 alertMessage += '</div>';
 
-                // Append the message to the alert-message-container div
                 $('#alert-message-container').html(alertMessage);
 
-                // Hide the alert message after 3 seconds
                 setTimeout(function() {
                     $('#alert-message-container').html('');
                 }, 3000);

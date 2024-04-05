@@ -1,69 +1,57 @@
 <?php
-// Start the session
 
-
-// Include necessary files and check user type
 include('navbar-user.php');
 include('condb.php');
 include('checkuser.php');
 
-// Check if user is logged in and redirect if not an admin
 $user_type_ID = getUserTypeID();
 if ($user_type_ID != 1){
-    header("Location: index.php"); // Redirect to index.php
-    exit(); // Ensure script execution stops after redirection
+    header("Location: index.php"); 
+    exit(); 
 }
 
-// Check if user ID is provided in the URL
 if (!isset($_GET['id']) || empty($_GET['id'])) {
-    header("Location: admin-user.php"); // Redirect back to user list if ID is not provided
-    exit(); // Ensure script execution stops after redirection
+    header("Location: admin-user.php"); 
+    exit(); 
 }
 
-// Get the user ID from the URL
 $user_id = $_GET['id'];
 
-// Query to fetch user information
 $sql = "SELECT * FROM `user_information` WHERE `user_ID` = $user_id";
 $query = mysqli_query($conn, $sql);
 $user_data = mysqli_fetch_assoc($query);
 
-// Check if the user exists
 if (!$user_data) {
-    echo "User not found"; // Handle case where user ID does not exist
-    exit(); // Ensure script execution stops after error handling
+    echo "User not found"; 
+    exit(); 
 }
 
-// Handle form submission for updating user data
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve form data
     $email = $_POST['email'];
     $user_type_ID = $_POST['user_type_ID'];
 
-    // Check for duplicate email
     $check_email_sql = "SELECT * FROM `user_information` WHERE `email` = '$email' AND `user_ID` != $user_id";
     $check_email_query = mysqli_query($conn, $check_email_sql);
     if (mysqli_num_rows($check_email_query) > 0) {
         $_SESSION['error_message'] = "Error: Email already exists.";
-        header("Location: ".$_SERVER['PHP_SELF']."?id=".$user_id); // Redirect back to form with error message
-        exit(); // Ensure script execution stops after redirection
+        header("Location: ".$_SERVER['PHP_SELF']."?id=".$user_id); 
+        exit(); 
     }
 
-    // Update user data in the database
     $update_sql = "UPDATE `user_information` SET `email` = '$email', `user_type_ID` = '$user_type_ID' WHERE `user_ID` = $user_id";
     $update_query = mysqli_query($conn, $update_sql);
 
     if ($update_query) {
-        header("Location: admin-user.php?updated=1"); // Redirect back to user list with success message
-        exit(); // Ensure script execution stops after redirection
+        header("Location: admin-user.php?updated=1"); 
+        exit(); 
     } else {
-        $_SESSION['error_message'] = "Error updating user data"; // Handle database update error
-        header("Location: ".$_SERVER['PHP_SELF']."?id=".$user_id); // Redirect back to form with error message
-        exit(); // Ensure script execution stops after redirection
+        $_SESSION['error_message'] = "Error updating user data"; 
+        header("Location: ".$_SERVER['PHP_SELF']."?id=".$user_id); 
+        exit(); 
     }
 }
 
-// Query to fetch user types
+
 $user_type_query = mysqli_query($conn, "SELECT * FROM `user_type`");
 $user_types = mysqli_fetch_all($user_type_query, MYSQLI_ASSOC);
 ?>
@@ -76,30 +64,22 @@ $user_types = mysqli_fetch_all($user_type_query, MYSQLI_ASSOC);
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Shop Homepage - Start Bootstrap Template</title>
-    <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
-    <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet">
 
-    <!-- JavaScript for confirmation dialog -->
     <script>
-        // Function to confirm before submitting form
         function confirmChanges() {
             return confirm("Are you sure you want to make changes?");
         }
     </script>
 
-    <!-- JavaScript to hide error message after a certain duration -->
     <script>
-        // Function to hide error message after a certain duration
         function hideErrorMessage() {
             var errorMessage = document.getElementById('error-message');
             errorMessage.style.display = 'none';
         }
 
-        // Automatically hide error message after 5 seconds
         setTimeout(hideErrorMessage, 5000);
     </script>
 </head>
@@ -107,7 +87,6 @@ $user_types = mysqli_fetch_all($user_type_query, MYSQLI_ASSOC);
     <div class="container mt-4">
         <h2>ข้อมูลลูกค้า</h2><br>
 
-        <!-- Display error message if exists -->
         <?php if (isset($_SESSION['error_message'])): ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error-message">
                 <?= $_SESSION['error_message']; ?>

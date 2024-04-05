@@ -1,5 +1,5 @@
 <?php
-// Include the connection file
+
 include 'navbar-user.php';
 include('condb.php');
 include 'checkuser.php';
@@ -9,39 +9,28 @@ if ($user_type_ID == 1) {
     include 'navbar-admin.php';
 }
 if ($user_type_ID != 1) {
-    header("Location: index.php"); // Redirect to index.php
-    exit(); // Ensure script execution stops after redirection
+    header("Location: index.php");
+    exit(); 
 }
 
-// Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve type_name from form data
     $type_name = $_POST['type_name'];
 
-    // Prepare SQL statement to insert data into products_types table
     $sql = "INSERT INTO products_types (type_name) VALUES ('$type_name')";
 
-    // Execute SQL statement
     if (mysqli_query($conn, $sql)) {
-        // If insertion successful, redirect back to product editor page
         header("Location: product.php");
-        exit(); // Ensure script execution stops after redirection
+        exit(); 
     } else {
-        // If there was an error with the SQL statement
         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
     }
 }
 
-// Query to retrieve all product types
 $sql = "SELECT * FROM products_types";
 
-// Execute the query
 $result = mysqli_query($conn, $sql);
 
-// Check if there are any rows returned
-// Check if there are any rows returned
 if (mysqli_num_rows($result) > 0) {
-    // Output data of each row
     echo "<div class='center existing-product-types'>";
     echo "<h2>ประเภทสินค้าต่างๆที่มีอยู่ในระบบ</h2>";
 
@@ -51,14 +40,12 @@ if (mysqli_num_rows($result) > 0) {
     echo "</ul>";
     echo "</div>";
 } else {
-    echo "<div class='center'>0 results</div>"; // If no rows returned
+    echo "<div class='center'>0 results</div>";
 }
 
 
-// Free result set
 mysqli_free_result($result);
 
-// Close connection
 mysqli_close($conn);
 ?>
 
@@ -70,19 +57,16 @@ mysqli_close($conn);
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>เพิ่มประเภทสินค้า</title>
-    <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="css/styles.css" rel="stylesheet" />
     <style>
-        /* CSS Styles for centering */
         .center {
             margin: 0 auto;
             text-align: center;
         }
 
-        /* CSS Styles for existing product types */
         .existing-product-types {
-            text-align: center; /* Align text to the center */
+            text-align: center; 
         }
     </style>
 </head>

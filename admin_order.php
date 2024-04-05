@@ -1,6 +1,5 @@
 <?php
-ob_start(); // Start output buffering
-
+ob_start(); 
 include 'navbar-user.php';
 include('condb.php');
 include 'checkuser.php';
@@ -10,16 +9,14 @@ if ($user_type_ID == 1) {
     include 'navbar-admin.php';
 }
 if ($user_type_ID != 1) {
-    header("Location: index.php"); // Redirect to index.php
-    exit(); // Ensure script execution stops after redirection
+    header("Location: index.php"); 
+    exit(); 
 }
 
-// Function to set session message
 function setSessionMessage($message) {
     $_SESSION['message'] = $message;
 }
 
-// Pagination
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $perPage = 10;
 $offset = ($page - 1) * $perPage;
@@ -35,14 +32,10 @@ $offset = ($page - 1) * $perPage;
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>All Orders</title>
-    <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="css/styles.css" rel="stylesheet" />
     <style>
-        /* Add any custom styles here */
-        /* Increase the width of the table columns */
         .table th,
         .table td {
             white-space: nowrap;
@@ -51,9 +44,7 @@ $offset = ($page - 1) * $perPage;
         }
     </style>
 
-    <!-- Add JavaScript for sorting -->
     <script>
-        // Function to toggle sorting order and submit form
         function toggleSort() {
             var currentSort = document.getElementById('sortOrder').value;
             var newSort = currentSort === 'ASC' ? 'DESC' : 'ASC';
@@ -64,7 +55,6 @@ $offset = ($page - 1) * $perPage;
 </head>
 
 <body>
-    <!-- Add sorting form -->
     <form id="sortForm" action="" method="GET" style="display: none;">
         <input type="hidden" name="search" value="<?= isset($_GET['search']) ? htmlentities($_GET['search']) : '' ?>">
         <input type="hidden" id="sortOrder" name="sortOrder" value="<?= isset($_GET['sortOrder']) ? $_GET['sortOrder'] : 'ASC' ?>">
@@ -74,7 +64,6 @@ $offset = ($page - 1) * $perPage;
         <h1 class="mt-5">การสั่งซื้อ</h1>
 
         <div class="row mb-3">
-            <!-- Search form -->
             <div class="col-md-6">
                 <form action="" method="GET" class="form-inline">
                     <div class="input-group">
@@ -104,7 +93,7 @@ $offset = ($page - 1) * $perPage;
                 <col width="10%">
                 <col width="7%">
                 <col width="8%">
-                <col width="15%"> <!-- Adjusted width for date_time column -->
+                <col width="15%"> 
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -119,7 +108,7 @@ $offset = ($page - 1) * $perPage;
                         <th>อำเภอ</th>
                         <th>จังหวัด</th>
                         <th>รหัสไปรษณีย์</th>
-                        <th>เวลาการสั่งซื้อ</th> <!-- New column header -->
+                        <th>เวลาการสั่งซื้อ</th> 
                         <th>รายละเอียด</th>
                         <th>Delete</th>
                         <th>เปลี่ยนสถานนะ</th>
@@ -127,13 +116,10 @@ $offset = ($page - 1) * $perPage;
                 </thead>
                 <tbody>
                     <?php
-                    // PHP code for sorting
-                   // PHP code for sorting
                         $sortColumn = isset($_GET['sortColumn']) && in_array($_GET['sortColumn'], ['order_ID', 'user_ID', 'order_status', 'status_name', 'net_price', 'name', 'phone', 'Address_information', 'tumbon', 'amphoe', 'province', 'zipcode', 'date_time']) ? $_GET['sortColumn'] : 'date_time';
                         $sortOrder = isset($_GET['sortOrder']) && in_array($_GET['sortOrder'], ['ASC', 'DESC']) ? $_GET['sortOrder'] : 'ASC';
                         $orderBy = "$sortColumn $sortOrder";
 
-                        // Fetch all orders from the database with joined tables
                         $sql = "SELECT orders.order_ID, orders.user_ID, orders_status.order_status, shipping_status.status_name, orders.net_price, address.name, address.phone, address.Address_information, address.tumbon, address.amphoe, address.province ,address.zipcode, orders.date_time
                                 FROM orders 
                                 INNER JOIN orders_status ON orders.orderstatus_ID = orders_status.orderstatus_ID 
@@ -141,10 +127,8 @@ $offset = ($page - 1) * $perPage;
                                 INNER JOIN address ON orders.address_ID = address.address_ID
                                 WHERE orders_status.order_status != 'แก้ไข'";
 
-                        // Add search condition if search term is provided
                         if (!empty($_GET['search'])) {
                             $searchTerm = mysqli_real_escape_string($conn, $_GET['search']);
-                            // Check if there's an existing WHERE clause
                             $sql .= (strpos($sql, 'WHERE') === false ? ' WHERE ' : ' AND ') . "(
                                 orders.order_ID LIKE '%$searchTerm%' OR 
                                 orders.user_ID LIKE '%$searchTerm%' OR 
@@ -162,13 +146,11 @@ $offset = ($page - 1) * $perPage;
                             )";
                         }
 
-                        $sql .= " ORDER BY order_ID DESC LIMIT $offset, $perPage"; // Ordering by order_ID in descending order
+                        $sql .= " ORDER BY order_ID DESC LIMIT $offset, $perPage"; 
 
                     $result = $conn->query($sql);
 
-                    // Check if there are any orders
                     if ($result->num_rows > 0) {
-                        // Loop through each order
                         while ($row = $result->fetch_assoc()) {
                             echo  "<tr>";
                             echo "<td>". $row['order_ID'] . "</td>";
@@ -183,26 +165,24 @@ $offset = ($page - 1) * $perPage;
                             echo "<td>" . $row['amphoe'] . "</td>";
                             echo "<td>" . $row['province'] . "</td>";
                             echo "<td>" . $row['zipcode'] . "</td>";
-                            echo "<td>" . date('d/m/Y H:i:s', strtotime($row['date_time'])) . "</td>"; // Displaying date and time in dd/mm/yyyy HH:MM:SS format
+                            echo "<td>" . date('d/m/Y H:i:s', strtotime($row['date_time'])) . "</td>"; 
                             echo "<td><a href='user_orderDetail.php?orderID=" . $row['order_ID'] . "' class='btn btn-primary'>View Details</a></td>";
                             echo "<td>
                                     <form method='post'>
                                         <input type='hidden' name='orderID' value='" . $row['order_ID'] . "' />
                                         <button type='submit' name='deleteOrder' class='btn btn-danger'  onclick='return confirm(\"Are you sure you want to delete this order?\")'>Delete</button>
                                     </form>
-                                </td>"; // Delete button
-                            echo "<td><a href='admin_orderEdit.php?orderID=" . $row['order_ID'] . "' class='btn btn-primary'>Change Status</a></td>"; // Change status button
+                                </td>"; 
+                            echo "<td><a href='admin_orderEdit.php?orderID=" . $row['order_ID'] . "' class='btn btn-primary'>Change Status</a></td>";
                             echo "</tr>";
                         }
                     } else {
                         echo "<tr><td colspan='13'>No orders found.</td></tr>";
                     }
 
-                    // Handle order deletion
                     if (isset($_POST['deleteOrder'])) {
                         $orderID = $_POST['orderID'];
 
-                        // Fetch products from the deleted order
                         $fetch_products_sql = "SELECT product_ID, quantity FROM orders_details WHERE order_ID = $orderID";
                         $products_result = $conn->query($fetch_products_sql);
 
@@ -211,7 +191,6 @@ $offset = ($page - 1) * $perPage;
                                 $productID = $product_row['product_ID'];
                                 $quantity = $product_row['quantity'];
 
-                                // Restore the quantity of the product in products_phone
                                 $update_stock_sql = "UPDATE products_phone SET product_stock = product_stock + $quantity WHERE product_ID = $productID";
                                 if ($conn->query($update_stock_sql) !== TRUE) {
                                     echo "<script>alert('Error updating product stock: " . $conn->error . "');</script>";
@@ -219,14 +198,11 @@ $offset = ($page - 1) * $perPage;
                             }
                         }
 
-                        // Delete associated details first
                         $delete_details_sql = "DELETE FROM orders_details WHERE order_ID = $orderID";
                         if ($conn->query($delete_details_sql) === TRUE) {
-                            // Proceed with deleting the order
                             $delete_sql = "DELETE FROM orders WHERE order_ID = $orderID";
                             if ($conn->query($delete_sql) === TRUE) {
-                                setSessionMessage("Order $orderID has been deleted and products have been restocked."); // Set success message
-                                // Redirect to avoid resubmission
+                                setSessionMessage("Order $orderID has been deleted and products have been restocked."); 
                                 header("Location: {$_SERVER['PHP_SELF']}?page=$page");
                                 exit();
                             } else {
@@ -240,11 +216,9 @@ $offset = ($page - 1) * $perPage;
                 </tbody>
             </table>
         </div>
-        <!-- Pagination links -->
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 <?php
-                // Fetch total number of orders for pagination
                 $totalOrdersQuery = "SELECT COUNT(*) AS total FROM orders 
                     INNER JOIN orders_status ON orders.orderstatus_ID = orders_status.orderstatus_ID 
                     INNER JOIN shipping_status ON orders.shipping_status_ID = shipping_status.status_ID
@@ -261,12 +235,10 @@ $offset = ($page - 1) * $perPage;
                 ?>
             </ul>
         </nav>
-        <!-- Display session message -->
         <?php
-        // Check if there is a session message
         if (isset($_SESSION['message'])) {
             echo "<div class='alert alert-success' role='alert'>" . $_SESSION['message'] . "</div>";
-            unset($_SESSION['message']); // Clear the session message
+            unset($_SESSION['message']); 
         }
         ?>
     </div>

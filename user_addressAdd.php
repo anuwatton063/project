@@ -2,23 +2,17 @@
 include('condb.php');
 include 'navbar-user.php';
 
-// Check if the user is logged in
 if (!isset($_SESSION['user_ID'])) {
-    // Redirect to login page or perform any other action if the user is not logged in
     header("Location: login.php");
     exit();
 }
 
-// Get the user_ID from the session
 $user_ID = $_SESSION['user_ID'];
 
-// Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Prepare and bind the SQL statement
     $stmt = $conn->prepare("INSERT INTO address (user_ID, name, phone, Address_information, tumbon, amphoe, province, Zipcode) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("isssssss", $user_ID, $name, $phone, $address, $sub_district, $district, $province, $postcode);
 
-    // Set parameters and execute
     $name = $_POST['name'];
     $phone = $_POST['phone'];
     $address = $_POST['address'];
@@ -28,7 +22,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $postcode = $_POST['postcode'];
 
     if ($stmt->execute()) {
-        // Data inserted successfully
         echo "<script>
                 var confirmed = confirm('Data inserted successfully. Do you want to go back to the address list?');
                 if (confirmed) {
@@ -36,12 +29,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
               </script>";
     } else {
-        // Error in data insertion
         echo "<script>alert('Error: " . $stmt->error . "');</script>";
     }
-    // Close statement
     $stmt->close();
-    // Close connection
     $conn->close();
 }
 ?>
@@ -54,11 +44,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Shop Homepage - Start Bootstrap Template</title>
-    <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
-    <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thailand Address Form</title>
@@ -146,27 +134,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $zipcode: $("#postcode")
             });
 
-            // Function to restrict input to numbers and limit to 10 digits
             function restrictInputToNumbers(inputField) {
                 inputField.on('input', function() {
-                    // Remove any non-numeric characters
                     var sanitized = $(this).val().replace(/\D/g, '');
-                    // Limit to 10 digits
                     var maxLength = 10;
                     if (sanitized.length > maxLength) {
                         sanitized = sanitized.substr(0, maxLength);
                     }
-                    // Update the input field value
                     $(this).val(sanitized);
                 });
             }
 
-            // Apply the number restriction to phone and postcode fields
             restrictInputToNumbers($("#phone"));
             restrictInputToNumbers($("#postcode"));
 
             $("#applyBtn").click(function() {
-                // Check if all fields are filled
                 var subDistrict = $("#sub_district").val();
                 var district = $("#district").val();
                 var province = $("#province").val();
@@ -180,7 +162,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     return;
                 }
 
-                // Confirmation dialog before submitting
                 var confirmed = confirm('Are you sure you want to apply this data?');
                 if (confirmed) {
                     $.ajax({
@@ -199,7 +180,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         success: function(response) {
                             console.log("Data submitted successfully:", response);
                             alert("Data submitted successfully");
-                            // Redirect to user_address.php after OK is clicked
                             window.location.href = "user_address.php";
                         },
                         error: function(xhr, status, error) {

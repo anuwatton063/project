@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="styles.css">
     <script>
         function showAlert(message) {
@@ -39,7 +40,6 @@
         function closeModal() {
             var modal = document.getElementById('exampleModal');
             modal.parentNode.removeChild(modal);
-            // Redirect to the current page to clear POST data
             window.location.href = window.location.href;
         }
     </script>
@@ -70,7 +70,6 @@
             </div>
         </div>
     </div>
-    <!-- สคริปต์ Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

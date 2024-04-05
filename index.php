@@ -2,13 +2,11 @@
 include('condb.php');
 include 'navbar-user.php';
 
-// Number of products to display per page
+
 $productsPerPage = 24;
 
-// Current page number, default to 1 if not provided
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 
-// Calculate the offset for the SQL query
 $offset = ($page - 1) * $productsPerPage;
 
 ?>
@@ -21,28 +19,25 @@ $offset = ($page - 1) * $productsPerPage;
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Shop Homepage </title>
-    <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
     <style>
-        /* Custom styles can be added here */
+      
         .card {
-            max-width: 250px; /* Set maximum width for the card */
+            max-width: 250px; 
         }
         .card-img-top {
-            width: 100%; /* Set width to 100% to make it fill the container */
-            height: 200px; /* Automatically adjust height to maintain aspect ratio */
+            width: 100%; 
+            height: 200px; 
         }
         .product-block {
-            margin-bottom: -140px; /* Adjust the margin between product type blocks */
+            margin-bottom: -140px;
         }
         .pagination {
             display: flex;
             justify-content: center;
-            margin-top: 100px; /* Move the pagination down by 100px */
+            margin-top: 100px; 
         }
         .pagination a {
             padding: 8px 16px;
@@ -57,20 +52,18 @@ $offset = ($page - 1) * $productsPerPage;
             color: #fff;
             border-color: #007bff;
         }
-        /* Centered alert message */
         .centered-alert {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 1000; /* Ensure the message is on top of everything */
+            z-index: 1000;
         }
     </style>
 </head>
 <body>
 <?php
 
-// Fetch products for the current page
 $sql = "SELECT products_phone.*, products_types.type_name 
         FROM products_phone 
         INNER JOIN products_types 
@@ -84,15 +77,13 @@ $result = mysqli_query($conn, $sql);
 if ($result && mysqli_num_rows($result) > 0) {
     $current_type = '';
     while ($row = mysqli_fetch_assoc($result)) {
-        // Define base directory for image uploads
+
         $base_dir = "../project/png/";
-        // Fetch image paths
+
         $cover_image_path = $base_dir . $row["product_cover_image"];
-        // Check if the cover image path is not empty and if the file exists
+
         if (!empty($row["product_cover_image"]) && file_exists($cover_image_path)) {
-            // Check if the type has changed
             if ($current_type !== $row['type_name']) {
-                // If it's a new type, close previous block and start a new one
                 if ($current_type !== '') {
                     echo '</div></div></section>';
                 }
@@ -100,7 +91,6 @@ if ($result && mysqli_num_rows($result) > 0) {
                 echo '<section class="py-5 product-block"><div class="container px-4 px-lg-5 mt-4">';
                 echo '<h2>' . $current_type . '</h2><div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">';
             }
-            // Output the product
                         echo '<div class="col mb-5">
                     <div class="card">
                         <img class="card-img-top" src="' . $cover_image_path . '" alt="Product Image" />
@@ -119,10 +109,7 @@ if ($result && mysqli_num_rows($result) > 0) {
 
         }
     }
-    // Close the last section
     echo '</div></div></section>';
-
-    // Pagination links
     $totalPagesSql = "SELECT COUNT(*) as count FROM products_phone WHERE product_stock > 0";
     $totalPagesResult = mysqli_query($conn, $totalPagesSql);
     $totalRows = mysqli_fetch_assoc($totalPagesResult)['count'];
@@ -134,7 +121,7 @@ if ($result && mysqli_num_rows($result) > 0) {
     }
     echo '</div>';
 } else {
-    // No products found
+
     echo "No products found.";
 }
 
@@ -150,8 +137,7 @@ if ($result && mysqli_num_rows($result) > 0) {
 
 <script>
 function addToCartBackend(productId, productName, productPrice, productImage) {
-    var quantityInput = 1; // Default quantity, can be changed as needed
-
+    var quantityInput = 1; 
     jQuery.ajax({
         url: 'cartadd.php',
         method: 'POST',
@@ -160,29 +146,27 @@ function addToCartBackend(productId, productName, productPrice, productImage) {
             productName: productName,
             quantity: quantityInput,
             productPrice: productPrice,
-            productImage: productImage // Pass the product image URL
+            productImage: productImage 
         },
         success: function(response) {
             console.log('Item added to cart successfully');
-            console.log('Response:', response); // Log the response received from the server
+            console.log('Response:', response); 
 
-            // Display a message on the webpage
             var alertMessage = '<div class="alert alert-success alert-dismissible fade show centered-alert" role="alert">';
             alertMessage += '<strong>Success!</strong> ได้นำสินค้าเข้าตะกร้าแล้ว';
             alertMessage += '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
             alertMessage += '</div>';
 
-            // Append the message to the alert-message-container div
             $('#alert-message-container').html(alertMessage);
 
-            // Hide the alert message after 3 seconds
+
             setTimeout(function() {
                 $('#alert-message-container').html('');
             }, 3000);
         },
         error: function(xhr, status, error) {
             console.error('Error adding item to cart:', error);
-            // You can add further error handling here, like displaying an error message to the user
+ 
         }
     });
 }

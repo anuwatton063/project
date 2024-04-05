@@ -5,22 +5,19 @@ include 'checkuser.php';
 
 $user_type_ID = getUserTypeID();
 if ($user_type_ID != 1) {
-    header("Location: index.php"); // Redirect to index.php if not admin
-    exit(); // Ensure script execution stops after redirection
+    header("Location: index.php"); 
+    exit(); 
 }
 
-// Check if the product ID is provided
+
 if (!isset($_GET['id']) || empty($_GET['id'])) {
-    header("Location: index.php"); // Redirect if product ID is not provided or empty
+    header("Location: index.php"); 
     exit();
 }
 
-// Fetch the product ID from the URL
 $product_id = mysqli_real_escape_string($conn, $_GET['id']);
 
-// If the form is submitted, update the product
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Fetch updated product details
     $product_type_ID = mysqli_real_escape_string($conn, $_POST['product_type_ID']);
     $product_brand_ID = mysqli_real_escape_string($conn, $_POST['product_brand_ID']);
     $product_color = mysqli_real_escape_string($conn, $_POST['product_color']);
@@ -30,33 +27,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $product_detail = mysqli_real_escape_string($conn, $_POST['product_detail']);
     $product_price = mysqli_real_escape_string($conn, $_POST['product_price']);
 
-    // Initialize variables to retain old image filenames
     $product_cover_image = '';
     $product_Image1 = '';
     $product_Image2 = '';
 
-    // Check if new cover image is uploaded
     if (!empty($_FILES['product_cover_image']['name'])) {
         $product_cover_image = $_FILES['product_cover_image']['name'];
         $target_dir = "../project/png/";  
         move_uploaded_file($_FILES['product_cover_image']['tmp_name'], $target_dir . $product_cover_image);
     }
 
-    // Check if new image 1 is uploaded
     if (!empty($_FILES['product_Image1']['name'])) {
         $product_Image1 = $_FILES['product_Image1']['name'];
         $target_dir = "../project/png/";  
         move_uploaded_file($_FILES['product_Image1']['tmp_name'], $target_dir . $product_Image1);
     }
 
-    // Check if new image 2 is uploaded
     if (!empty($_FILES['product_Image2']['name'])) {
         $product_Image2 = $_FILES['product_Image2']['name'];
         $target_dir = "../project/png/";  
         move_uploaded_file($_FILES['product_Image2']['tmp_name'], $target_dir . $product_Image2);
     }
 
-    // Update the product in the database
     $sql = "UPDATE products_phone AS pp
             INNER JOIN products_types AS pt ON pp.product_type_ID = pt.product_type_ID
             INNER JOIN product_brand AS pb ON pp.product_brand_ID = pb.product_brand_ID
@@ -69,17 +61,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 pp.product_detail = '$product_detail',
                 pp.product_price = '$product_price'";
 
-    // Append cover image update to SQL query if provided
     if (!empty($product_cover_image)) {
         $sql .= ", pp.product_cover_image = '$product_cover_image'";
     }
 
-    // Append image 1 update to SQL query if provided
     if (!empty($product_Image1)) {
         $sql .= ", pp.product_Image1 = '$product_Image1'";
     }
 
-    // Append image 2 update to SQL query if provided
     if (!empty($product_Image2)) {
         $sql .= ", pp.product_Image2 = '$product_Image2'";
     }
@@ -87,7 +76,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql .= " WHERE pp.product_ID = $product_id";
 
     if (mysqli_query($conn, $sql)) {
-        // Product updated successfully, redirect to product.php
         header("Location: product.php?id=$product_id");
         exit();
     } else {
@@ -95,7 +83,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Fetch the product details to populate the form
 $sql = "SELECT pp.*, pt.type_name, pb.brand_name 
         FROM products_phone AS pp
         INNER JOIN products_types AS pt ON pp.product_type_ID = pt.product_type_ID
@@ -108,9 +95,8 @@ if (!$result || mysqli_num_rows($result) == 0) {
     exit();
 }
 
-$row = mysqli_fetch_assoc($result); // Fetch product details
+$row = mysqli_fetch_assoc($result); 
 
-// Display the form to edit the product
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -118,14 +104,13 @@ $row = mysqli_fetch_assoc($result); // Fetch product details
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Product</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <style>
-        /* ปรับขนาดและพฤติกรรมของช่อง Product Detail */
+
         #product_detail {
-            width: 100%; /* ขยายความกว้างเต็มระยะ */
-            height: 100px; /* กำหนดความสูงของช่อง */
-            resize: vertical; /* อนุญาตให้ขยายขนาดแนวตั้ง */
+            width: 100%; 
+            height: 100px; 
+            resize: vertical; 
         }
     </style>
 </head>
@@ -207,7 +192,6 @@ $row = mysqli_fetch_assoc($result); // Fetch product details
         </form>
     </div>
 
-    <!-- JavaScript for image preview -->
     <script>
         function previewImage(input, previewId) {
             var preview = document.getElementById(previewId);
