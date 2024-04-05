@@ -193,7 +193,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["transfer_slip"])) {
     <div class="container">
         <div class="row mt-4">
             <div class="col-md-6">
-                <h2>รายระเอียด</h2>
+                <h2>รายละเอียด</h2>
                 <table class="table">
                     <tr>
                         
