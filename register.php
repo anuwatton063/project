@@ -83,7 +83,7 @@ $conn->close();
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <div class="form-container">
-                <h2 class="mb-4">Registration Form</h2>
+                <h2 class="mb-4">Registration</h2>
 
                 <?php if (!empty($errors)): ?>
                     <div class="alert alert-danger mt-3" role="alert">

@@ -16,25 +16,16 @@ if ($user_type_ID != 1){
 if(isset($_POST['delete_id'])) {
 
     $delete_id = $_POST['delete_id'];
-
-
     $sql = "DELETE FROM `products_phone` WHERE product_ID = $delete_id";
-
-
     if(mysqli_query($conn, $sql)) {
-
     } else {
-
         echo "Error deleting product: " . mysqli_error($conn);
     }
 }
 
-
 $products_per_page = 10;
 
-
 $current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-
 
 $offset = ($current_page - 1) * $products_per_page;
 
@@ -57,9 +48,7 @@ if (!empty($search)) {
 }
 
 $sql .= " ORDER BY $sort $order";
-
 $sql .= " LIMIT $offset, $products_per_page";
-
 $result = mysqli_query($conn, $sql);
 
 $total_products_query = "SELECT COUNT(*) as total FROM `products_phone`";
@@ -80,7 +69,6 @@ if ($total_pages > 1) {
     }
     $pagination_links .= "</ul></div></div>";
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -245,11 +233,14 @@ if ($total_pages > 1) {
                         echo "<td>" . $row["product_stock"] . "</td>";
                         echo "<td>" . $row["product_name"] . "</td>";
                         echo "<td>";
-                        if (strlen($row["product_detail"]) > 20) {
-                            echo substr($row["product_detail"], 0, 20) . "...";
+                        if (mb_strlen($row["product_detail"]) > 20) {
+                            $trimmed_detail = mb_substr($row["product_detail"], 0, 20) . "...";
                         } else {
-                            echo $row["product_detail"];
+                            $trimmed_detail = $row["product_detail"];
                         }
+                        $trimmed_detail = str_replace('�', '', $trimmed_detail);
+                        
+                        echo $trimmed_detail;                                             
                         echo "</td>";
                         echo "<td>$cover_image_html</td>";
                         echo "<td>" . $row["product_price"] . "</td>";
